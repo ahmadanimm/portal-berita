@@ -30,30 +30,25 @@
                 <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
             </label>
         </div>
-    </form>
 
-    <!-- Tombol Login & Register sejajar -->
-    <div class="flex items-center justify-end mt-4 space-x-2">
-        @if (Route::has('password.request'))
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 mr-4"
-                href="{{ route('password.request') }}">
-                {{ __('Forgot your password?') }}
-            </a>
-        @endif
+        <!-- Tombol Login & Register sejajar -->
+        <div class="flex items-center justify-end mt-4 space-x-2">
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 mr-4"
+                    href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
 
-        <!-- Tombol Login -->
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <x-primary-button>
+            <x-primary-button type="submit">
                 {{ __('Log in') }}
             </x-primary-button>
-        </form>
 
-        <!-- Tombol Register -->
-        <a href="{{ route('register') }}">
-            <x-primary-button class="bg-gray-600 hover:bg-gray-700">
-                {{ __('Register') }}
-            </x-primary-button>
-        </a>
-    </div>
+            <a href="{{ route('register') }}">
+                <x-primary-button type="button" class="bg-gray-600 hover:bg-gray-700">
+                    {{ __('Register') }}
+                </x-primary-button>
+            </a>
+        </div>
+    </form>
 </x-guest-layout>

@@ -2,26 +2,37 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\StatsController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard user biasa
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
+    // Profile user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Subscribe / unsubscribe
+    Route::post('/subscribe', [\App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
+    Route::post('/unsubscribe', [\App\Http\Controllers\SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
 });
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+// Group khusus route admin, dengan middleware 'auth', 'verified', dan 'admin'
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('articles', ArticleController::class);
+    Route::get('stats', [StatsController::class, 'index'])->name('stats');
 });
 
-
+// Route publik
+Route::get('/', [PublicController::class, 'index'])->name('home');
+Route::get('/berita/{slug}', [PublicController::class, 'show'])->name('berita.show');
+Route::get('/kategori/{slug}', [PublicController::class, 'category'])->name('kategori.show');
+Route::get('/cari', [PublicController::class, 'search'])->name('search');
 
 require __DIR__.'/auth.php';
