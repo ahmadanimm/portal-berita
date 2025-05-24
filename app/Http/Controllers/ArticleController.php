@@ -11,40 +11,46 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with(['category', 'author'])->paginate(10);
+        $query = Article::with('category');
+
+        if ($request->search) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        $articles = $query->latest()->get();
+
         return view('admin.articles.index', compact('articles'));
     }
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = \App\Models\Category::all();
         return view('admin.articles.create', compact('categories'));
     }
+
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png',
             'body' => 'required|string',
-            'thumbnail' => 'nullable|image|max:2048',
-            'is_premium' => 'nullable|boolean',
         ]);
 
-        if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $validated['thumbnail'] = $path;
-        }
-
-        $validated['slug'] = Str::slug($validated['title']);
-        $validated['user_id'] = Auth::id();
         $validated['is_premium'] = $request->has('is_premium');
+        $validated['user_id'] = auth()->id();
+        $validated['slug'] = Str::slug($validated['title']);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
 
         Article::create($validated);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dibuat!');
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     public function edit(Article $article)
@@ -60,33 +66,36 @@ class ArticleController extends Controller
             'category_id' => 'required|exists:categories,id',
             'body' => 'required|string',
             'thumbnail' => 'nullable|image|max:2048',
-            'is_premium' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('thumbnail')) {
-            // Hapus file lama jika ada
             if ($article->thumbnail) {
                 \Storage::disk('public')->delete($article->thumbnail);
             }
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-            $validated['thumbnail'] = $path;
+
+            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
         }
 
-        $validated['slug'] = Str::slug($validated['title']);
+        $validated['slug'] = \Str::slug($validated['title']);
         $validated['is_premium'] = $request->has('is_premium');
 
         $article->update($validated);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil diupdate!');
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diupdate!');
     }
+
 
     public function destroy(Article $article)
     {
+        // Hapus thumbnail dari storage
         if ($article->thumbnail) {
             \Storage::disk('public')->delete($article->thumbnail);
         }
+
+        // Hapus dari database
         $article->delete();
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dihapus!');
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus!');
     }
+
 }

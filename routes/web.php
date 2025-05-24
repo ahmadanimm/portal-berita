@@ -4,9 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\IsAdmin;
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard user biasa
@@ -23,9 +26,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Group khusus route admin, dengan middleware 'auth', 'verified', dan 'admin'
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('articles', ArticleController::class);
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::get('stats', [StatsController::class, 'index'])->name('stats');
 });
 
