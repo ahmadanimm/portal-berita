@@ -19,10 +19,11 @@ class ArticleController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $articles = $query->latest()->get();
+        $articles = $query->latest()->paginate(10); // <--- pakai paginate
 
         return view('admin.articles.index', compact('articles'));
     }
+
 
     public function create()
     {
@@ -85,17 +86,51 @@ class ArticleController extends Controller
     }
 
 
-    public function destroy(Article $article)
+    public function destroy(Request $request, $id)
     {
-        // Hapus thumbnail dari storage
+        if ($request->has('selected_ids')) {
+            $ids = explode(',', $request->input('selected_ids'));
+
+            $articles = \App\Models\Article::whereIn('id', $ids)->get();
+            foreach ($articles as $article) {
+                if ($article->thumbnail) {
+                    \Storage::disk('public')->delete($article->thumbnail);
+                }
+            }
+
+            \App\Models\Article::whereIn('id', $ids)->delete();
+            return redirect()->route('admin.articles.index')->with('success', 'Artikel yang dipilih berhasil dihapus.');
+        }
+
+        $article = \App\Models\Article::findOrFail($id);
         if ($article->thumbnail) {
             \Storage::disk('public')->delete($article->thumbnail);
         }
-
-        // Hapus dari database
         $article->delete();
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus!');
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus.');
     }
+
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = explode(',', $request->input('selected_ids'));
+
+        // Hapus thumbnail dari storage jika ada
+        $articles = \App\Models\Article::whereIn('id', $ids)->get();
+        foreach ($articles as $article) {
+            if ($article->thumbnail) {
+                \Storage::disk('public')->delete($article->thumbnail);
+            }
+        }
+
+        // Hapus dari database
+        \App\Models\Article::whereIn('id', $ids)->delete();
+
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel yang dipilih berhasil dihapus.');
+    }
+
+
+
 
 }

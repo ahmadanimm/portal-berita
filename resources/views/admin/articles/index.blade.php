@@ -2,61 +2,150 @@
 
 @section('content')
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Article News</h1>
+    <h1 class="text-2xl font-bold text-white">Article News</h1>
     <a href="{{ route('admin.articles.create') }}" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
         + New Article
     </a>
 </div>
 
-<!-- Search -->
-<form method="GET" action="{{ route('admin.articles.index') }}" class="mb-4">
-    <input type="text" name="search" value="{{ request('search') }}"
-           class="px-3 py-1 rounded border border-gray-300 w-64 text-black"
-           placeholder="Cari artikel...">
-    <button type="submit" class="ml-2 bg-gray-800 text-white px-3 py-1 rounded">Cari</button>
-</form>
+<div class="bg-gray-900 p-4 rounded-lg shadow-lg">
+    <div class="flex justify-between items-center mb-4">
+        <!-- Selected Count & Delete Button -->
+        <form id="bulk-delete-form" method="POST" action="{{ route('admin.articles.destroy', ['article' => 0]) }}" onsubmit="return confirm('Yakin ingin menghapus artikel terpilih?');">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="selected_ids" id="selected-ids">
+            <div id="selected-count" class="hidden text-white mb-1"></div>
+            <button type="submit" id="delete-selected" class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded text-sm">
+                <i class="fas fa-trash mr-1"></i> Delete selected
+            </button>
+        </form>
 
-<!-- Table -->
-<div class="bg-white text-black p-4 rounded shadow">
-    <table class="min-w-full text-sm">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="p-2 text-left">Judul</th>
-                <th class="p-2 text-left">Kategori</th>
-                <th class="p-2 text-left">Status</th>
-                <th class="p-2 text-left">Thumbnail</th>
-                <th class="p-2 text-left">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($articles as $article)
-                <tr class="border-b">
-                    <td class="p-2">{{ $article->title }}</td>
-                    <td class="p-2">{{ $article->category->name ?? '-' }}</td>
-                    <td class="p-2">
-                        @if($article->is_premium)
-                            <span class="text-yellow-600 font-semibold">Premium</span>
-                        @else
-                            <span class="text-green-600">Gratis</span>
-                        @endif
-                    </td>
-                    <td class="p-2">
-                        @if($article->thumbnail)
-                            <img src="{{ asset('storage/'.$article->thumbnail) }}" class="w-12 h-12 object-cover rounded" />
-                        @endif
-                    </td>
-                    <td class="p-2">
-                        <a href="{{ route('admin.articles.edit', $article->id) }}" class="text-blue-500 hover:underline">Edit</a>
-                        <form action="{{ route('admin.articles.destroy', $article->id) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Hapus artikel ini?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:underline">Hapus</button>
-                        </form>
-                    </td>
+        <!-- Search Bar -->
+        <form method="GET" action="{{ route('admin.articles.index') }}" class="relative w-64">
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search"
+                oninput="delayedSubmit(this.form)"
+                class="bg-gray-800 border border-orange-500 text-white text-sm rounded-full px-4 py-1 pl-10 pr-8 focus:outline-none focus:ring w-full"
+            />
+            <span class="absolute left-3 top-1.5 text-orange-400">
+                <i class="fas fa-search"></i>
+            </span>
+            @if(request('search'))
+                <a href="{{ route('admin.articles.index') }}" class="absolute right-3 top-1.5 text-orange-400">
+                    <i class="fas fa-times"></i>
+                </a>
+            @endif
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-gray-800 text-white text-sm">
+            <thead>
+                <tr class="bg-gray-700 text-left">
+                    <th class="px-4 py-2">
+                        <input type="checkbox" id="select-all">
+                    </th>
+                    <th class="px-4 py-2">Judul</th>
+                    <th class="px-4 py-2">Kategori</th>
+                    <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Thumbnail</th>
+                    <th class="px-4 py-2">Aksi</th>
                 </tr>
-            @empty
-                <tr><td colspan="5" class="p-2 text-center">Tidak ada artikel.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="divide-y divide-gray-700">
+                @forelse ($articles as $article)
+                    <tr>
+                        <td class="px-4 py-2">
+                            <input type="checkbox" class="select-item" value="{{ $article->id }}">
+                        </td>
+                        <td class="px-4 py-2">{{ $article->title }}</td>
+                        <td class="px-4 py-2">{{ $article->category->name ?? '-' }}</td>
+                        <td class="px-4 py-2">
+                            @if($article->is_premium)
+                                <span class="text-yellow-600 font-semibold">Premium</span>
+                            @else
+                                <span class="text-green-600">Gratis</span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            @if($article->thumbnail)
+                                <img src="{{ asset('storage/'.$article->thumbnail) }}" class="w-12 h-12 object-cover rounded" />
+                            @else
+                                <span class="text-gray-400 italic">No image</span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            <a href="{{ route('admin.articles.edit', $article->id) }}" class="text-orange-400 hover:underline">
+                                <i class="fas fa-pen mr-1"></i>Edit
+                            </a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6" class="p-2 text-center">Tidak ada artikel.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-between items-center mt-4 text-sm text-white">
+        <div class="pr-6">
+            Showing {{ $articles->firstItem() }} to {{ $articles->lastItem() }} of {{ $articles->total() }} results
+        </div>
+        <div>
+            {{ $articles->onEachSide(1)->links('pagination::tailwind') }}
+        </div>
+    </div>
 </div>
+
+<script>
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.select-item');
+    const selectedIdsInput = document.getElementById('selected-ids');
+    const deleteButton = document.getElementById('delete-selected');
+    const selectedCountText = document.getElementById('selected-count');
+
+    function updateSelectedDisplay() {
+        const selected = Array.from(checkboxes).filter(cb => cb.checked);
+        if (selected.length > 0) {
+            deleteButton.classList.remove('hidden');
+            selectedCountText.classList.remove('hidden');
+            selectedCountText.innerText = `${selected.length} selected`;
+        } else {
+            deleteButton.classList.add('hidden');
+            selectedCountText.classList.add('hidden');
+        }
+    }
+
+    function setSelectedIds() {
+        const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        selectedIdsInput.value = selected.join(',');
+    }
+
+    selectAll.addEventListener('change', function () {
+        checkboxes.forEach(cb => {
+            cb.checked = this.checked;
+        });
+        updateSelectedDisplay();
+    });
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateSelectedDisplay);
+    });
+
+    let timeout;
+    function delayedSubmit(form) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            form.submit();
+        }, 500);
+    }
+
+    document.getElementById('bulk-delete-form').addEventListener('submit', function(e) {
+        setSelectedIds();
+    });
+</script>
 @endsection

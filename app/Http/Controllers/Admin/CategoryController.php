@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
+
 class CategoryController extends Controller
 {
     /**
@@ -16,11 +17,11 @@ class CategoryController extends Controller
     {
         $query = \App\Models\Category::query();
 
-        if ($request->has('search')) {
+        if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $categories = $query->latest()->get();
+        $categories = $query->latest()->paginate(10);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -101,18 +102,40 @@ class CategoryController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id = null)
     {
-        $category = \App\Models\Category::findOrFail($id);
+        $ids = $request->selected_ids ? explode(',', $request->selected_ids) : [$id];
 
-        // Hapus ikon dari storage
-        if ($category->icon) {
-            \Storage::disk('public')->delete($category->icon);
+        $categories = \App\Models\Category::whereIn('id', $ids)->get();
+
+        foreach ($categories as $category) {
+            if ($category->icon) {
+                \Storage::disk('public')->delete($category->icon);
+            }
+            $category->delete();
         }
-
-        $category->delete();
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
+
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = explode(',', $request->selected_ids);
+
+        $categories = \App\Models\Category::whereIn('id', $ids)->get();
+
+        foreach ($categories as $category) {
+            if ($category->icon) {
+                \Storage::disk('public')->delete($category->icon);
+            }
+            $category->delete();
+        }
+
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori terpilih berhasil dihapus.');
+    }
+
+
+    
 
 }
