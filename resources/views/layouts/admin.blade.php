@@ -25,6 +25,9 @@
                     <a href="{{ route('admin.articles.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('admin.articles.*') ? 'bg-gray-700' : '' }}">
                         📰 Article News
                     </a>
+                    <a href="{{ route('admin.authors.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('admin.authors.*') ? 'bg-gray-700' : '' }}">
+                        👤 Authors
+                    </a>
                     <a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('admin.categories.*') ? 'bg-gray-700' : '' }}">
                         🗂️ Categories
                     </a>
