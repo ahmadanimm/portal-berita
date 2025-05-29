@@ -14,7 +14,11 @@ use App\Http\Middleware\IsAdmin;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard user biasa
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', function () {
+        return redirect('/');
+    })->name('dashboard');
+
+    Route::get('/cari', [PublicController::class, 'search'])->name('search');
 
     // Profile user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

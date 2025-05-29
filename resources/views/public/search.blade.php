@@ -1,24 +1,18 @@
 @extends('layouts.main')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Hasil pencarian untuk: "{{ $query }}"</h1>
+  <h2 class="text-xl font-bold mb-4">Hasil Pencarian untuk: "{{ $query }}"</h2>
 
-    @if($articles->count())
-        <ul class="space-y-4">
-            @foreach($articles as $article)
-                <li class="bg-white p-4 rounded shadow">
-                    <a href="{{ route('berita.show', $article->slug) }}" class="text-blue-600 hover:underline text-lg font-semibold">
-                        {{ $article->title }}
-                    </a>
-                    <p class="text-gray-600">{{ Str::limit($article->body, 120) }}</p>
-                </li>
-            @endforeach
-        </ul>
+  @forelse ($articles as $article)
+    <div class="mb-4 border-b pb-3">
+      <h3 class="text-lg font-semibold">{{ $article->title }}</h3>
+      <p class="text-sm text-gray-600">{{ \Str::limit($article->body, 150) }}</p>
+    </div>
+  @empty
+    <p>Tidak ada hasil ditemukan.</p>
+  @endforelse
 
-        <div class="mt-4">
-            {{ $articles->links() }}
-        </div>
-    @else
-        <p>Tidak ditemukan hasil untuk pencarian "{{ $query }}".</p>
-    @endif
+  <div class="mt-6">
+    {{ $articles->links() }}
+  </div>
 @endsection

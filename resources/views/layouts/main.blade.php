@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Portal Berita' }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ $title ?? 'Ruang Kabar' }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 text-gray-800">
-    @include('partials.navbar')
+<body class="bg-white text-black font-sans">
 
-    <main class="max-w-7xl mx-auto mt-4">
-        {{-- Alert error --}}
-        @if(session('error'))
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
+  @include('partials.navbar')
 
-        {{-- Alert sukses --}}
-        @if(session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
+  @yield('hero')
 
-        @yield('content')
-    </main>
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    @yield('content')
+  </main>
+
+  @include('partials.footer')
+
 </body>
 </html>

@@ -12,11 +12,12 @@ class PublicController extends Controller
 {
     public function index()
     {
+        $categories = Category::all();
         $headline = Article::latest()->where('is_premium', false)->first();
         $latest = Article::latest()->take(5)->get();
         $popular = Article::inRandomOrder()->take(5)->get(); // dummy populer
 
-        return view('public.index', compact('headline', 'latest', 'popular'));
+        return view('public.index', compact('headline', 'latest', 'popular', 'categories'));
     }
 
     public function show($slug)
@@ -38,23 +39,23 @@ class PublicController extends Controller
     }
 
 
-
     public function category($slug)
     {
-        $category = \App\Models\Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->firstOrFail();
 
-        $canAccess = true;
-
-        if ($category->is_premium) {
-            $user = auth()->user();
-            $canAccess = $user && $user->is_subscribed && $user->subscribed_until && $user->subscribed_until->isFuture();
-        }
-
-        if (!$canAccess) {
-            return redirect()->route('home')->with('error', 'Kategori ini hanya untuk pengguna berlangganan.');
-        }
-
-        $articles = $category->articles()->latest()->paginate(10);
+        // Dummy articles sementara
+        $articles = [
+            [
+                'title' => 'Judul Berita Dummy 1',
+                'thumbnail' => 'assets/images/banner.png',
+                'date' => '01/06/2025, 12:00 WIB',
+            ],
+            [
+                'title' => 'Judul Berita Dummy 2',
+                'thumbnail' => 'assets/images/banner.png',
+                'date' => '01/06/2025, 14:30 WIB',
+            ],
+        ];
 
         return view('public.category', compact('category', 'articles'));
     }
@@ -62,18 +63,15 @@ class PublicController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('q');
+        $query = $request->input('query');
 
-        $articles = Article::where('is_premium', false)
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                ->orWhere('body', 'like', "%{$query}%");
-            })
-            ->latest()
-            ->paginate(10);
+        $articles = Article::where('title', 'like', '%' . $query . '%')
+                    ->orWhere('body', 'like', '%' . $query . '%')
+                    ->paginate(10);
 
         return view('public.search', compact('articles', 'query'));
     }
+
 
 
 
