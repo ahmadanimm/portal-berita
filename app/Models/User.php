@@ -41,4 +41,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Subscription::class);
     }
+
+    public function savedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_saved')->withTimestamps();
+    }
+
 }

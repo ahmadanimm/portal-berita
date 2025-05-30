@@ -8,7 +8,7 @@ class Article extends Model
 {
     protected $fillable = [
         'title', 'slug', 'body', 'thumbnail',
-        'category_id', 'user_id', 'is_premium'
+        'category_id', 'author_id', 'is_premium'
     ];
 
     public function category()
@@ -18,6 +18,12 @@ class Article extends Model
 
     public function author()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function usersSaved()
+    {
+        return $this->belongsToMany(User::class, 'article_user_saved')->withTimestamps();
+    }
+
 }

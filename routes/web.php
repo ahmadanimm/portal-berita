@@ -21,10 +21,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/cari', [PublicController::class, 'search'])->name('search');
 
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profile');
+
+
+
     // Profile user
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
 
     // Subscribe / unsubscribe
     Route::post('/subscribe', [\App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');

@@ -42,7 +42,7 @@ class ArticleController extends Controller
         ]);
 
         $validated['is_premium'] = $request->has('is_premium');
-        $validated['user_id'] = auth()->id();
+        $validated['author_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']);
 
         if ($request->hasFile('thumbnail')) {
