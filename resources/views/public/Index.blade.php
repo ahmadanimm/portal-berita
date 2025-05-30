@@ -306,4 +306,72 @@
   </div>
 </section>
 
+<section class="py-10 bg-white text-center">
+  <h2 class="text-3xl font-bold mb-10">Explore Our <br><span class="text-black">Entertainment News</span></h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-10">
+
+    <!-- CARD -->
+    <div class="bg-white rounded-xl shadow-md border p-2">
+      <div class="bg-white p-2 rounded-lg overflow-hidden">
+        <div class="relative">
+          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 1" class="w-full h-44 object-cover rounded-md">
+          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
+        </div>
+      </div>
+      <div class="p-4 text-left">
+        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
+        <!-- Garis pendek berwarna biru -->
+        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
+      </div>
+    </div>
+
+    <!-- CARD DUPLIKASI (3x lagi) -->
+    <div class="bg-white rounded-xl shadow-md border p-2">
+      <div class="bg-white p-2 rounded-lg overflow-hidden">
+        <div class="relative">
+          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 2" class="w-full h-44 object-cover rounded-md">
+          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
+        </div>
+      </div>
+      <div class="p-4 text-left">
+        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
+        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md border p-2">
+      <div class="bg-white p-2 rounded-lg overflow-hidden">
+        <div class="relative">
+          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 3" class="w-full h-44 object-cover rounded-md">
+          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
+        </div>
+      </div>
+      <div class="p-4 text-left">
+        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
+        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md border p-2">
+      <div class="bg-white p-2 rounded-lg overflow-hidden">
+        <div class="relative">
+          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 4" class="w-full h-44 object-cover rounded-md">
+          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
+        </div>
+      </div>
+      <div class="p-4 text-left">
+        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
+        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 @endsection

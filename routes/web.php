@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\CategoryController; // Controller utama
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Controller admin pakai alias
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AuthorController;
@@ -46,7 +47,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('
 // Route publik
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/berita/{slug}', [PublicController::class, 'show'])->name('berita.show');
-Route::get('/kategori/{slug}', [PublicController::class, 'category'])->name('kategori.show');
+Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/cari', [PublicController::class, 'search'])->name('search');
 
 require __DIR__.'/auth.php';

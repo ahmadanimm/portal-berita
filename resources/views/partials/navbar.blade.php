@@ -67,29 +67,20 @@
 
   <div class="mt-4 border-b border-gray-200"></div>
 
-<div class="flex flex-wrap justify-center gap-3 py-4">
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-film"></i> Entertainment
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-car-front"></i> Automotive
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-heart-pulse"></i> Health
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-bank"></i> Politics
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-briefcase"></i> Business
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-trophy"></i> Sport
-  </button>
-  <button class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
-    <i class="bi bi-cup-straw"></i> Foods
-  </button>
-</div>
+  <div class="flex flex-wrap justify-center gap-3 py-4">
+    @foreach ($categories as $category)
+      <a href="{{ route('category.show', $category->slug) }}" 
+        class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
+
+        {{-- Ambil icon dari kolom icon --}}
+        <img src="{{ asset('storage/' . $category->icon) }}" 
+              alt="" 
+              class="w-5 h-5 object-contain" />
+
+        <span>{{ $category->name }}</span>
+      </a>
+    @endforeach
+  </div>
 
 <script src="https://unpkg.com/alpinejs" defer></script>
 
