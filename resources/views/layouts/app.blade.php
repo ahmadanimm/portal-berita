@@ -39,5 +39,6 @@
             </div>
         </main>
     </div>
+    <script defer src="//unpkg.com/alpinejs" type="text/javascript"></script>
 </body>
 </html>

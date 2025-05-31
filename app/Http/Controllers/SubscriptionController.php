@@ -3,49 +3,72 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Subscription;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
-    public function subscribe(Request $request)
+    public function index()
     {
-        $user = $request->user();
+        return view('subscription.index'); // View berlangganan
+    }
 
-        $lastSubscription = $user->subscriptions()->latest('ends_at')->first();
+    public function subscribe($type)
+    {
+        $user = Auth::user();
 
-        if ($lastSubscription && $lastSubscription->ends_at->isFuture()) {
-            // Mulai langganan baru satu hari setelah langganan terakhir berakhir
-            $start = $lastSubscription->ends_at->copy()->addDay();
-        } else {
-            $start = Carbon::now();
+        // Cegah uji coba kedua
+        if ($type === 'trial' && $user->trial_used) {
+            return redirect()->route('profile')->with('error', 'Uji coba hanya dapat digunakan sekali.');
         }
 
-        $end = $start->copy()->addDays(30);
+        $durations = [
+            'trial' => 7,
+            '1month' => 30,
+            '2months' => 60,
+            '3months' => 90,
+        ];
 
         $user->is_subscribed = true;
-        $user->subscribed_until = $end;
+        $user->subscription_type = $type;
+        $user->subscription_start = now();
+        $user->subscription_end = now()->addDays($durations[$type]);
+
+        if ($type === 'trial') {
+            $user->trial_used = true;
+        }
+
         $user->save();
 
-        Subscription::create([
-            'user_id' => $user->id,
-            'starts_at' => $start,
-            'ends_at' => $end,
-        ]);
-
-        return redirect()->back()->with('success', 'Berhasil berlangganan 30 hari!');
+        return redirect()->route('profile')->with('success', 'Berlangganan berhasil!');
     }
 
-    public function unsubscribe(Request $request)
+    public function unsubscribe()
     {
-        $user = $request->user();
-
+        $user = Auth::user();
         $user->is_subscribed = false;
-        $user->subscribed_until = null;
+        $user->subscription_type = null;
+        $user->subscription_start = null;
+        $user->subscription_end = null;
         $user->save();
 
-        // Jangan ubah riwayat langganan yang sudah ada
-
-        return redirect()->back()->with('success', 'Langganan berhasil dibatalkan.');
+        return redirect()->route('profile')->with('success', 'Berlangganan telah dihentikan.');
     }
+
+    public function startTrial(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->trial_used) {
+            return redirect('/profil')->with('error', 'Uji coba hanya dapat digunakan sekali.');
+        }
+
+        $user->trial_used = true;
+        $user->is_subscribed = true;
+        $user->save();
+
+        return redirect('/profil')->with('success', 'Uji coba 7 hari berhasil diaktifkan.');
+    }
+
 }
+

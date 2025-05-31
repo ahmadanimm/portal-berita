@@ -5,6 +5,20 @@
 @include('partials.navbar-profile')
 
 <div class="max-w-7xl ml-12 mr-12 mt-10 mx-auto px-4 py-10">
+
+  {{-- Notifikasi --}}
+  @if(session('success'))
+    <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+      {{ session('success') }}
+    </div>
+  @endif
+
+  @if(session('error'))
+    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+      {{ session('error') }}
+    </div>
+  @endif
+  
   <!-- Profile section -->
   <div class="flex flex-col md:flex-row items-center md:items-start md:gap-6 mb-10">
   <!-- Avatar -->
@@ -19,17 +33,27 @@
     <!-- User info -->
     <div class="flex-1 text-center md:text-left mt-4 md:mt-0">
       <h1 class="text-2xl md:text-3xl font-bold flex items-center justify-center md:justify-start gap-2">
-        {{ Auth::user()->name }} 
-        <i class="bi bi-patch-check-fill text-blue-600"></i>
+        {{ Auth::user()->name }}
+        @if (Auth::user()->is_subscribed)
+          <i class="bi bi-patch-check-fill text-blue-600 text-lg"></i>
+        @endif
       </h1>
       <p class="text-sm text-gray-600">{{ Auth::user()->email }}</p>
 
       <div class="mt-4 flex justify-center md:justify-start gap-3">
         <a href="{{ route('profile.edit') }}" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700">Edit profile</a>
-        <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-semibold hover:bg-blue-200">Berlangganan</a>
+        @if (Auth::user()->is_subscribed)
+          <form method="POST" action="{{ route('subscription.unsubscribe') }}">
+            @csrf
+            <button class="bg-gray-300 text-gray-600 px-4 py-2 rounded font-semibold hover:bg-gray-400">Berhenti Berlangganan</button>
+          </form>
+        @else
+          <a href="{{ route('subscription.index') }}" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-semibold hover:bg-blue-200">Berlangganan</a>
+        @endif
       </div>
     </div>
   </div>
+
 
   <!-- Tabs -->
   <div class="flex flex-wrap justify-center md:justify-start gap-4 border-b pb-4 mb-6">

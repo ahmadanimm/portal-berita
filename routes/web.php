@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\CategoryController; // Controller utama
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Controller admin pakai alias
 use App\Http\Controllers\Admin\StatsController;
@@ -31,8 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
 
     // Subscribe / unsubscribe
-    Route::post('/subscribe', [\App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
-    Route::post('/unsubscribe', [\App\Http\Controllers\SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
+    Route::get('/berlangganan', [SubscriptionController::class, 'index'])->name('subscription.index');
+    Route::post('/subscribe/{type}', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
+    Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscription.unsubscribe');
+    Route::post('/subscription/trial', [SubscriptionController::class, 'startTrial'])->name('subscription.trial');
+
 });
 
 // Group khusus route admin, dengan middleware 'auth', 'verified', dan 'admin'
@@ -50,7 +54,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('
 
 // Route publik
 Route::get('/', [PublicController::class, 'index'])->name('home');
-Route::get('/berita/{slug}', [PublicController::class, 'show'])->name('berita.show');
+Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/cari', [PublicController::class, 'search'])->name('search');
 

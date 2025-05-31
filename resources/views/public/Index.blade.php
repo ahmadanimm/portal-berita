@@ -1,43 +1,54 @@
 @extends('layouts.main')
 
 @section('hero')
-<section class="relative h-[400px] w-full mb-12 overflow-hidden">
-  <div
-    class="absolute inset-0 bg-cover bg-center"
-    style="background-image: url('{{ asset('assets/images/bg.png') }}')"
-  ></div>
+<section x-data="{ active: 0 }" class="relative h-[400px] w-full mb-12 overflow-hidden">
 
-  <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-
-  <div class="relative max-w-7xl mx-auto px-5 py-12 text-white flex flex-col justify-end h-full">
-    <span
-      class="inline-block bg-indigo-700 px-3 py-1 rounded text-xs font-semibold mb-3 max-w-max"
-      >Health</span
-    >
-
-    <time class="text-sm mb-3 block">
-      29/04/2025, 21:00 WIB
-    </time>
-
-    <span class="block bg-blue-600 w-[20px] h-[2px] mb-4 rounded"></span>
-
-    <h1 class="text-2xl font-bold leading-tight max-w-xl">
-      Bukan Cuma Lelah, Ini yang Terjadi pada Fisik Setelah Lari Maraton
-    </h1>
-
-    <div class="absolute bottom-6 right-5 flex gap-3">
-      <button
-        class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
+  @foreach ($latestPerCategory as $index => $category)
+    @php $article = $category->articles->sortByDesc('created_at')->first(); @endphp
+    @if ($article)
+      <div
+        x-show="active === {{ $index }}"
+        class="absolute inset-0 transition-opacity duration-500"
+        style="background-image: url('{{ asset('storage/' . $article->thumbnail) }}'); background-size: cover; background-position: center;"
       >
-        <i class="bi bi-chevron-left text-white text-xl"></i>
-      </button>
-      <button
-        class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
-      >
-        <i class="bi bi-chevron-right text-white text-xl"></i>
-      </button>
-    </div>
-  </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <!-- Kontainer teks + tombol -->
+        <div class="relative max-w-7xl mx-auto px-8 py-12 text-white flex flex-col justify-end h-full">
+          <span class="inline-block bg-indigo-700 px-3 py-1 rounded text-xs font-semibold mb-3 max-w-max">
+            {{ $category->name }}
+          </span>
+
+          <time class="text-sm mb-3 block">
+            {{ $article->created_at->format('d/m/Y, H:i') }} WIB
+          </time>
+
+          <span class="block bg-blue-600 w-[20px] h-[2px] mb-4 rounded"></span>
+
+          <h1 class="text-2xl font-bold leading-tight max-w-xl">
+            {{ $article->title }}
+          </h1>
+
+          <!-- Tombol posisi tetap seperti kode asli -->
+          <div class="absolute bottom-6 right-8 flex gap-3">
+            <button
+              @click="active = active === 0 ? {{ $latestPerCategory->count() - 1 }} : active - 1"
+              class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
+            >
+              <i class="bi bi-chevron-left text-white text-xl"></i>
+            </button>
+            <button
+              @click="active = active === {{ $latestPerCategory->count() - 1 }} ? 0 : active + 1"
+              class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
+            >
+              <i class="bi bi-chevron-right text-white text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    @endif
+  @endforeach
+
 </section>
 @endsection
 
@@ -172,206 +183,57 @@
       Explore All Masterpieces<br>Written by People
     </h2>
   </div>
+
   <div class="flex flex-wrap justify-center gap-6">
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Author Sabrina Juli" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Sabrina Juli</h4>
-      <p class="text-xs text-gray-600">3 News</p>
-    </div>
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Author Junior Parrito" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Junior Parrito</h4>
-      <p class="text-xs text-gray-600">2 News</p>
-    </div>
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Author Ruben Pari" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Ruben Pari</h4>
-      <p class="text-xs text-gray-600">4 News</p>
-    </div>
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="Author Cindy Gulle" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Cindy Gulle</h4>
-      <p class="text-xs text-gray-600">6 News</p>
-    </div>
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="Author Sarah Wati" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Sarah Wati</h4>
-      <p class="text-xs text-gray-600">0 News</p>
-    </div>
-    <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
-      <img src="https://randomuser.me/api/portraits/men/6.jpg" alt="Author Ibra Kuro" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
-      <h4 class="text-base font-semibold mb-1">Ibra Kuro</h4>
-      <p class="text-xs text-gray-600">5 News</p>
-    </div>
+    @foreach ($topAuthors as $author)
+      <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
+        <img src="{{ asset('storage/' . $author->avatar) }}" alt="{{ $author->name }}" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
+        <h4 class="text-base font-semibold mb-1">{{ $author->name }}</h4>
+        <p class="text-xs text-gray-600">{{ $author->articles_count }} News</p>
+      </div>
+    @endforeach
   </div>
 </section>
 
-{{-- Entertainment Section --}}
-<section class="bg-white p-6 rounded-lg shadow-sm">
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-3">
-    <div>
-      <h2 class="text-3xl font-bold text-gray-900 leading-tight">Latest For You</h2>
-      <h2 class="text-3xl font-bold text-gray-900 leading-tight">in Entertainment</h2>
-    </div>
-    <a href="#" class="text-blue-600 font-semibold text-sm border border-blue-600 rounded-full px-4 py-1 hover:bg-blue-600 hover:text-white transition">Explore All</a>
-  </div>
 
-  <div class="flex flex-col lg:flex-row gap-6">
-    {{-- Featured Article (flex 2) --}}
-    <div class="relative flex-[1.5] min-h-[360px] rounded-lg overflow-hidden shadow-md bg-gray-100">
-      <img src="{{ asset('assets/images/bg.png') }}" alt="Featured Entertainment" class="w-full h-[360px] object-cover">
-      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-5 pt-16">
-        <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded mb-2 inline-block">Featured</span>
-        <h3 class="text-2xl font-bold leading-snug">Tesla Jadi Pilihan Pacaran Tanpa Anak</h3>
-        <p class="text-sm opacity-80">Jul 29, 2024</p>
-      </div>
-    </div>
-
-    {{-- Side Articles (flex 1) --}}
-    <div class="flex-1 flex flex-col gap-4">
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Superhero Revolution" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
+@foreach ($categoriesWithArticles as $category)
+  @if ($category->articles->count())
+    <section class="bg-white p-6 rounded-lg shadow-sm mb-12">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-3">
         <div>
-          <h4 class="text-base font-semibold">Superhero Revolution</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
+          <h2 class="text-3xl font-bold text-gray-900 leading-tight">Latest For You</h2>
+          <h2 class="text-3xl font-bold text-gray-900 leading-tight">in {{ $category->name }}</h2>
         </div>
-      </a>
-
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Mystery of Kingdom" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
-        <div>
-          <h4 class="text-base font-semibold">Mystery of Kingdom</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
-        </div>
-      </a>
-
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Top Artis Indonesia" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
-        <div>
-          <h4 class="text-base font-semibold">Top Artis Indonesia</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-{{-- Business Section --}}
-<section class="bg-white p-6 rounded-lg shadow-sm">
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-3">
-    <div>
-      <h2 class="text-3xl font-bold text-gray-900 leading-tight">Latest For You</h2>
-      <h2 class="text-3xl font-bold text-gray-900 leading-tight">in Business</h2>
-    </div>
-    <a href="#" class="text-blue-600 font-semibold text-sm border border-blue-600 rounded-full px-4 py-1 hover:bg-blue-600 hover:text-white transition">Explore All</a>
-  </div>
-
-  <div class="flex flex-col lg:flex-row gap-6">
-    {{-- Featured Article (flex 2) --}}
-    <div class="relative flex-[1.5] min-h-[360px] rounded-lg overflow-hidden shadow-md bg-gray-100">
-      <img src="{{ asset('assets/images/bg.png') }}" alt="Featured Entertainment" class="w-full h-[360px] object-cover">
-      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-5 pt-16">
-        <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded mb-2 inline-block">Featured</span>
-        <h3 class="text-2xl font-bold leading-snug">Tesla Jadi Pilihan Pacaran Tanpa Anak</h3>
-        <p class="text-sm opacity-80">Jul 29, 2024</p>
+        <a href="{{ route('category.show', $category->slug) }}" class="text-blue-600 font-semibold text-sm border border-blue-600 rounded-full px-4 py-1 hover:bg-blue-600 hover:text-white transition">Explore All</a>
       </div>
-    </div>
 
-    {{-- Side Articles (flex 1) --}}
-    <div class="flex-1 flex flex-col gap-4">
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Superhero Revolution" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
-        <div>
-          <h4 class="text-base font-semibold">Superhero Revolution</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
+      <div class="flex flex-col lg:flex-row gap-6">
+        {{-- Featured Article --}}
+        @php $featured = $category->articles->first(); @endphp
+        <div class="relative flex-[1.5] min-h-[360px] rounded-lg overflow-hidden shadow-md bg-gray-100">
+          <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->title }}" class="w-full h-[360px] object-cover">
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-5 pt-16">
+            <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded mb-2 inline-block">Featured</span>
+            <h3 class="text-2xl font-bold leading-snug">{{ $featured->title }}</h3>
+            <p class="text-sm opacity-80">{{ $featured->created_at->format('M d, Y') }}</p>
+          </div>
         </div>
-      </a>
 
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Mystery of Kingdom" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
-        <div>
-          <h4 class="text-base font-semibold">Mystery of Kingdom</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
-        </div>
-      </a>
-
-      <a href="#" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
-        <img src="{{ asset('assets/images/bg.png') }}" alt="Top Artis Indonesia" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
-        <div>
-          <h4 class="text-base font-semibold">Top Artis Indonesia</h4>
-          <p class="text-sm text-gray-600">Jul 27, 2024</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="py-10 bg-white text-center">
-  <h2 class="text-3xl font-bold mb-10">Explore Our <br><span class="text-black">Entertainment News</span></h2>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-10">
-
-    <!-- CARD -->
-    <div class="bg-white rounded-xl shadow-md border p-2">
-      <div class="bg-white p-2 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 1" class="w-full h-44 object-cover rounded-md">
-          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
+        {{-- Side Articles --}}
+        <div class="flex-1 flex flex-col gap-4">
+          @foreach ($category->articles->skip(1) as $article)
+            <a href="{{ route('article.show', $article->slug) }}" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
+              <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
+              <div>
+                <h4 class="text-base font-semibold">{{ $article->title }}</h4>
+                <p class="text-sm text-gray-600">{{ $article->created_at->format('M d, Y') }}</p>
+              </div>
+            </a>
+          @endforeach
         </div>
       </div>
-      <div class="p-4 text-left">
-        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
-        <!-- Garis pendek berwarna biru -->
-        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
-        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
-      </div>
-    </div>
-
-    <!-- CARD DUPLIKASI (3x lagi) -->
-    <div class="bg-white rounded-xl shadow-md border p-2">
-      <div class="bg-white p-2 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 2" class="w-full h-44 object-cover rounded-md">
-          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
-        </div>
-      </div>
-      <div class="p-4 text-left">
-        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
-        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
-        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-md border p-2">
-      <div class="bg-white p-2 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 3" class="w-full h-44 object-cover rounded-md">
-          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
-        </div>
-      </div>
-      <div class="p-4 text-left">
-        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
-        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
-        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-md border p-2">
-      <div class="bg-white p-2 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img src="{{ asset('assets/images/bg.png') }}" alt="Entertainment 4" class="w-full h-44 object-cover rounded-md">
-          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">Entertainment</span>
-        </div>
-      </div>
-      <div class="p-4 text-left">
-        <h3 class="font-semibold text-sm mb-3 leading-snug">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h3>
-        <div class="w-10 h-1 bg-blue-500 mb-2"></div>
-        <p class="text-xs text-gray-600">29/04/2025, 21:00 WIB</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
+    </section>
+  @endif
+@endforeach
 
 @endsection
