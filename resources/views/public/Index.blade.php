@@ -210,14 +210,14 @@
       <div class="flex flex-col lg:flex-row gap-6">
         {{-- Featured Article --}}
         @php $featured = $category->articles->first(); @endphp
-        <div class="relative flex-[1.5] min-h-[360px] rounded-lg overflow-hidden shadow-md bg-gray-100">
-          <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->title }}" class="w-full h-[360px] object-cover">
+        <a href="{{ route('article.show', $featured->slug) }}" class="relative block flex-[1.5] min-h-[360px] rounded-lg overflow-hidden shadow-md bg-gray-100 group">
+          <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="{{ $featured->title }}" class="w-full h-[360px] object-cover group-hover:scale-105 transition duration-300">
           <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-5 pt-16">
             <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded mb-2 inline-block">Featured</span>
             <h3 class="text-2xl font-bold leading-snug">{{ $featured->title }}</h3>
             <p class="text-sm opacity-80">{{ $featured->created_at->format('M d, Y') }}</p>
           </div>
-        </div>
+        </a>
 
         {{-- Side Articles --}}
         <div class="flex-1 flex flex-col gap-4">

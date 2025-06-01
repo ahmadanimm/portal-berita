@@ -31,6 +31,16 @@ class ArticleController extends Controller
         return view('admin.articles.create', compact('categories'));
     }
 
+    public function show($slug)
+    {
+        $article = Article::where('slug', $slug)
+            ->with(['author', 'category']) // pastikan relasi dimuat
+            ->firstOrFail();
+
+        return view('public.article', compact('article'));
+    }
+
+
 
     public function store(Request $request)
     {

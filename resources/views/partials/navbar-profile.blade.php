@@ -2,9 +2,9 @@
   <div class="container mx-auto flex justify-between items-center px-4 max-w-7xl">
     <!-- Kiri: Logo (lebih besar) -->
     <a href="{{ url('/') }}">
-      <img src="{{ asset('assets/images/logo web 333x133.png') }}" 
+      <img src="{{ asset('assets/images/logo 170x50.png') }}" 
            alt="Logo Ruang Kabar" 
-           class="w-[220px] h-[55px] object-contain" />
+           class="w-[170px] h-[50px] object-contain" />
     </a>
 
     <!-- Kanan: Tombol Beranda (siku, seperti Edit Profil) -->

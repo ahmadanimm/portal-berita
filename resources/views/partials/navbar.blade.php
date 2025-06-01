@@ -1,10 +1,12 @@
-<header class="border-b border-gray-300 py-4">
+<header class="border-b border-white py-4">
   <div class="container mx-auto flex justify-between items-center px-4 max-w-7xl">
     <div class="flex items-center gap-8">
       <div class="logo">
-        <img src="{{ asset('assets/images/logo web 333x133.png') }}" alt="Logo Ruang Kabar" class="w-[230px] h-[50px] object-contain" />
+        <a href="{{ url('/') }}">
+          <img src="{{ asset('assets/images/logo 170x50.png') }}" alt="Logo Ruang Kabar" class="w-[170px] h-[50px] object-contain" />
+        </a>
       </div>
-      <div class="border-l border-gray-400 h-10"></div>
+      <div class="border-l-2 border-gray-400 h-11"></div>
       <form method="GET" action="{{ route('search') }}" class="relative">
         <input
             type="text"
@@ -70,7 +72,7 @@
   <div class="mt-4 border-b border-gray-200"></div>
 
   <div class="flex flex-wrap justify-center gap-3 py-4">
-    @foreach ($categories as $category)
+    @foreach ($nav_categories as $category)
       <a href="{{ route('category.show', $category->slug) }}" 
         class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
 
