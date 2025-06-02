@@ -36,10 +36,19 @@ class ArticleController extends Controller
         $article = Article::where('slug', $slug)
             ->with(['author', 'category']) // pastikan relasi dimuat
             ->firstOrFail();
+        
+        // Cek apakah artikel ini premium
+        if ($article->is_premium) {
+            $user = auth()->user();
+
+            // Jika belum login atau belum berlangganan
+            if (!$user || !$user->is_subscribed) {
+                return redirect()->route('profile')->with('error', 'Untuk mengakses artikel premium, Anda harus berlangganan terlebih dahulu.');
+            }
+        }
 
         return view('public.article', compact('article'));
     }
-
 
 
     public function store(Request $request)

@@ -11,17 +11,13 @@ class CategoryController extends Controller
     {
         $categories = Category::all(); 
         $category = Category::where('slug', $slug)->firstOrFail();
-        $user = auth()->user();
 
-        $query = Article::where('category_id', $category->id);
-
-        // Sembunyikan artikel premium jika belum berlangganan
-        if (!$user || !$user->is_subscribed) {
-            $query->where('is_premium', false);
-        }
-
-        $articles = $query->latest()->paginate(12);
+        // Ambil semua artikel dari kategori ini (tanpa filter premium)
+        $articles = Article::where('category_id', $category->id)
+                        ->latest()
+                        ->paginate(12);
 
         return view('public.category', compact('category', 'articles', 'categories'));
     }
+
 }

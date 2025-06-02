@@ -186,7 +186,7 @@
 
   <div class="flex flex-wrap justify-center gap-6">
     @foreach ($topAuthors as $author)
-      <div class="bg-gray-100 rounded-2xl p-6 w-40 text-center shadow-sm">
+      <div class="border border-gray-300 rounded-2xl p-6 w-40 text-center shadow-sm transform transition duration-300 hover:scale-105 hover:shadow-md">
         <img src="{{ asset('storage/' . $author->avatar) }}" alt="{{ $author->name }}" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
         <h4 class="text-base font-semibold mb-1">{{ $author->name }}</h4>
         <p class="text-xs text-gray-600">{{ $author->articles_count }} News</p>
@@ -198,7 +198,7 @@
 
 @foreach ($categoriesWithArticles as $category)
   @if ($category->articles->count())
-    <section class="bg-white p-6 rounded-lg shadow-sm mb-12">
+    <section class="bg-white p-6 rounded-lg mb-12">
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-3">
         <div>
           <h2 class="text-3xl font-bold text-gray-900 leading-tight">Latest For You</h2>
@@ -220,9 +220,9 @@
         </a>
 
         {{-- Side Articles --}}
-        <div class="flex-1 flex flex-col gap-4">
+        <div class="flex-1 flex flex-col gap-5">
           @foreach ($category->articles->skip(1) as $article)
-            <a href="{{ route('article.show', $article->slug) }}" class="flex items-center gap-4 bg-gray-50 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
+            <a href="{{ route('article.show', $article->slug) }}" class="flex items-center gap-4 border border-gray-200 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
               <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}" class="w-28 h-20 object-cover rounded-md flex-shrink-0">
               <div>
                 <h4 class="text-base font-semibold">{{ $article->title }}</h4>
