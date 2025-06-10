@@ -85,7 +85,7 @@ class ArticleController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'body' => 'required|string',
-            'thumbnail' => 'nullable|image|max:2048',
+            'thumbnail' => 'nullable|image|max:5120',
         ]);
 
         if ($request->hasFile('thumbnail')) {

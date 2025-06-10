@@ -146,7 +146,7 @@
 
 
 
-{{-- Section for Likes, Dislikes, Saves, and Comments --}}
+{{-- Section for Likes, Dislikes, Saves --}}
 <div class="mt-8 px-6 pb-8">
     <div class="flex items-center justify-start gap-6 bg-blue-700 text-white rounded-lg py-3 px-6 w-fit shadow-md">
 
@@ -166,12 +166,7 @@
             <i class="fa-solid fa-bookmark"></i> 
             <span>2</span>
         </button>
-        <span class="h-6 w-px bg-blue-500"></span> 
 
-        <button class="flex items-center gap-2 text-lg hover:text-blue-200 transition-colors">
-            <i class="fa-solid fa-share-alt"></i> 
-            <span>2</span>
-        </button>
     </div>
 
     {{-- Comments Section Container --}}

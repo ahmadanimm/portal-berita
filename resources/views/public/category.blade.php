@@ -17,52 +17,60 @@
         $isLocked = $article->is_premium && (!auth()->check() || !auth()->user()->is_subscribed);
       @endphp
 
-      <div class="bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
-        <div class="bg-white p-2 rounded-lg overflow-hidden">
-          <div class="relative">
-            <img src="{{ asset('storage/' . $article->thumbnail) }}" 
-                 alt="{{ $article->title }}" 
-                 class="w-full h-44 object-cover rounded-md">
-
-            {{-- Kategori --}}
-            <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-              {{ $category->name }}
-            </span>
+      @if ($isLocked)
+        <div onclick="showPremiumModal()" class="cursor-pointer bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
+          {{-- isi card premium yang tidak bisa diklik --}}
+          <div class="bg-white p-2 rounded-lg overflow-hidden">
+            <div class="relative">
+              <img src="{{ asset('storage/' . $article->thumbnail) }}" 
+                  alt="{{ $article->title }}" 
+                  class="w-full h-44 object-cover rounded-md">
+              <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                {{ $category->name }}
+              </span>
+            </div>
           </div>
-        </div>
-
-        <div class="p-4 text-left">
-          <h3 class="font-semibold text-sm mb-3 leading-snug">
-            @if ($isLocked)
-              <button 
-                onclick="showPremiumModal()" 
-                class="text-left text-black hover:text-blue-600 transition-colors duration-200 no-underline"
-              >
-                {{ Str::limit($article->title, 80) }}
-              </button>
-            @else
-              <a 
-                href="{{ route('article.show', $article->slug) }}" 
-                class="text-black hover:text-blue-600 transition-colors duration-200 no-underline"
-              >
-                {{ Str::limit($article->title, 80) }}
-              </a>
-            @endif
-          </h3>
-
-          <div class="w-10 h-1 bg-blue-500 mb-2"></div>
-
-          <div class="flex items-center justify-between text-xs text-gray-600">
-            <span>{{ \Carbon\Carbon::parse($article->created_at)->format('d/m/Y, H:i') }} WIB</span>
-
-            @if ($article->is_premium)
+          <div class="p-4 text-left">
+            <h3 class="font-semibold text-sm mb-3 leading-snug">
+              <span class="text-black">{{ Str::limit($article->title, 80) }}</span>
+            </h3>
+            <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <span>{{ \Carbon\Carbon::parse($article->created_at)->format('d/m/Y, H:i') }} WIB</span>
               <span class="bg-yellow-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                 Premium
               </span>
-            @endif
+            </div>
           </div>
         </div>
-      </div>
+      @else
+        <a href="{{ route('article.show', $article->slug) }}" class="block bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
+          <div class="bg-white p-2 rounded-lg overflow-hidden">
+            <div class="relative">
+              <img src="{{ asset('storage/' . $article->thumbnail) }}" 
+                  alt="{{ $article->title }}" 
+                  class="w-full h-44 object-cover rounded-md">
+              <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                {{ $category->name }}
+              </span>
+            </div>
+          </div>
+          <div class="p-4 text-left">
+            <h3 class="font-semibold text-sm mb-3 leading-snug text-black hover:text-blue-600">
+              {{ Str::limit($article->title, 80) }}
+            </h3>
+            <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <span>{{ \Carbon\Carbon::parse($article->created_at)->format('d/m/Y, H:i') }} WIB</span>
+              @if ($article->is_premium)
+                <span class="bg-yellow-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  Premium
+                </span>
+              @endif
+            </div>
+          </div>
+        </a>
+      @endif
     @endforeach
   </div>
 
