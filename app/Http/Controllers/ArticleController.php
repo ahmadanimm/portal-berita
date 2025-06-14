@@ -47,7 +47,15 @@ class ArticleController extends Controller
             }
         }
 
-        return view('public.article', compact('article'));
+        // Ambil 5 artikel lain dari author yang sama, tidak termasuk artikel ini
+        $moreFromAuthor = \App\Models\Article::with('category')
+            ->where('author_id', $article->author_id)
+            ->where('id', '!=', $article->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('public.article', compact('article', 'moreFromAuthor'));
     }
 
 

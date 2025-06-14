@@ -59,78 +59,30 @@
 
         <aside class="w-full lg:w-2/5">
             <div class="p-6">
-                <h3 class=" font-semibold mb-6 text-2xl">More From Author</h3>
+                <h3 class="font-semibold mb-6 text-2xl">More From Author</h3>
 
-                <article class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
-                    <img
-                    src="{{ asset('assets/images/banner.png') }}"
-                    alt="Populer 1"
-                    class="w-28 h-20 object-cover rounded-md flex-shrink-0"
-                    />
-                    <div>
-                    <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">Foods</span>
-                    <time class="text-gray-600 text-xs mb-2 block">27/04/2025, 18:00 WIB</time>
-                    <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
-                    <h4 class="font-semibold text-sm">5 Resep Minuman Segar untuk Musim Panas</h4>
-                    </div>
-                </article>
-
-                <article class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
-                    <img
-                    src="{{ asset('assets/images/banner.png') }}"
-                    alt="Populer 2"
-                    class="w-28 h-20 object-cover rounded-md flex-shrink-0"
-                    />
-                    <div>
-                    <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">Business</span>
-                    <time class="text-gray-600 text-xs mb-2 block">26/04/2025, 14:15 WIB</time>
-                    <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
-                    <h4 class="font-semibold text-sm">Startup Lokal Raih Pendanaan Seri B</h4>
-                    </div>
-                </article>
-
-                <article class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
-                    <img
-                    src="{{ asset('assets/images/banner.png') }}"
-                    alt="Populer 3"
-                    class="w-28 h-20 object-cover rounded-md flex-shrink-0"
-                    />
-                    <div>
-                    <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">Entertainment</span>
-                    <time class="text-gray-600 text-xs mb-2 block">25/04/2025, 19:30 WIB</time>
-                    <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
-                    <h4 class="font-semibold text-sm">Film Indie Meraih Penghargaan Bergengsi</h4>
-                    </div>
-                </article>
-
-                <article class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
-                    <img
-                    src="{{ asset('assets/images/banner.png') }}"
-                    alt="Populer 3"
-                    class="w-28 h-20 object-cover rounded-md flex-shrink-0"
-                    />
-                    <div>
-                    <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">Entertainment</span>
-                    <time class="text-gray-600 text-xs mb-2 block">25/04/2025, 19:30 WIB</time>
-                    <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
-                    <h4 class="font-semibold text-sm">Film Indie Meraih Penghargaan Bergengsi</h4>
-                    </div>
-                </article>
-
-                <article class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
-                    <img
-                    src="{{ asset('assets/images/banner.png') }}"
-                    alt="Populer 3"
-                    class="w-28 h-20 object-cover rounded-md flex-shrink-0"
-                    />
-                    <div>
-                    <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">Entertainment</span>
-                    <time class="text-gray-600 text-xs mb-2 block">25/04/2025, 19:30 WIB</time>
-                    <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
-                    <h4 class="font-semibold text-sm">Film Indie Meraih Penghargaan Bergengsi</h4>
-                    </div>
-                </article>
-
+                @forelse ($moreFromAuthor as $item)
+                    <a href="{{ route('article.show', $item->slug) }}"
+                    class="flex items-center gap-3 mb-5 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
+                        <img
+                            src="{{ asset('storage/' . $item->thumbnail) }}"
+                            alt="{{ $item->title }}"
+                            class="w-28 h-20 object-cover rounded-md flex-shrink-0"
+                        />
+                        <div>
+                            <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">
+                                {{ $item->category->name ?? 'Uncategorized' }}
+                            </span>
+                            <time class="text-gray-600 text-xs mb-2 block">
+                                {{ $item->created_at->format('d/m/Y, H:i') }} WIB
+                            </time>
+                            <span class="block bg-blue-600 w-[20px] h-[2px] mb-2 rounded"></span>
+                            <h4 class="font-semibold text-sm">{{ $item->title }}</h4>
+                        </div>
+                    </a>
+                @empty
+                    <p class="text-sm text-gray-600">Tidak ada artikel lain dari penulis ini.</p>
+                @endforelse
             </div>
         </aside>
 

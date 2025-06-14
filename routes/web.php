@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Group khusus route admin, dengan middleware 'auth', 'verified', dan 'admin'
 Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('articles', ArticleController::class);
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('authors', AuthorController::class);

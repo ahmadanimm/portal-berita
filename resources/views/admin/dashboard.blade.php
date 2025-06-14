@@ -1,48 +1,102 @@
 @extends('layouts.admin')
 
+@section('page-title', 'Dashboard')
+
 @section('content')
-<div class="mb-6">
-    <h1 class="text-2xl font-bold">Dashboard Admin</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Chart Pelanggan -->
+    <div class="bg-white rounded shadow p-6">
+        <div class="flex items-center mb-4">
+            <div class="bg-pink-500 text-white rounded-lg p-2 mr-3">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-800">Rekap Pelanggan</h2>
+        </div>
+        <div class="relative h-96">
+            <canvas id="userChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Chart Kategori Artikel -->
+    <div class="bg-white rounded shadow p-6">
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-500 text-white rounded-lg p-2 mr-3">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-800">Rekap Kategori Artikel</h2>
+        </div>
+        <div class="relative h-96">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-    <div class="bg-white text-gray-800 p-4 rounded shadow">
-        <h2 class="text-lg font-semibold">Total Pengguna</h2>
-        <p class="text-3xl">{{ $userCount }}</p>
-    </div>
-    <div class="bg-white text-gray-800 p-4 rounded shadow">
-        <h2 class="text-lg font-semibold">Pelanggan Premium</h2>
-        <p class="text-3xl">{{ $premiumUsers }}</p>
-    </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Fungsi untuk menghasilkan warna berbeda berdasarkan jumlah data
+    function generateColors(length) {
+        const colors = [];
+        for (let i = 0; i < length; i++) {
+            const hue = Math.floor(360 * i / length); // sebaran warna merata
+            colors.push(`hsl(${hue}, 70%, 60%)`);
+        }
+        return colors;
+    }
 
-<div class="bg-white text-gray-800 p-6 rounded shadow">
-    <h2 class="text-xl font-bold mb-4">Artikel Terbaru</h2>
-    <table class="min-w-full text-sm">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="p-2 text-left">Judul</th>
-                <th class="p-2 text-left">Kategori</th>
-                <th class="p-2 text-left">Status</th>
-                <th class="p-2 text-left">Tanggal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($latestArticles as $article)
-            <tr class="border-b">
-                <td class="p-2">{{ $article->title }}</td>
-                <td class="p-2">{{ $article->category->name ?? '-' }}</td>
-                <td class="p-2">
-                    @if($article->is_premium)
-                        <span class="text-yellow-600 font-semibold">Premium</span>
-                    @else
-                        <span class="text-green-600">Gratis</span>
-                    @endif
-                </td>
-                <td class="p-2">{{ $article->created_at->format('d M Y') }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    // User Chart
+    const userChartCtx = document.getElementById('userChart').getContext('2d');
+    const userChart = new Chart(userChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Umum', 'Premium'],
+            datasets: [{
+                data: [{{ $userCount - $premiumUsers }}, {{ $premiumUsers }}],
+                backgroundColor: ['#3b82f6', '#38bdf8'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#374151'
+                    }
+                }
+            }
+        }
+    });
+
+    // Category Chart dengan warna dinamis
+    const categoryLabels = {!! json_encode($categoryLabels) !!};
+    const categoryData = {!! json_encode($categoryCounts) !!};
+    const categoryColors = generateColors(categoryLabels.length);
+
+    const categoryChartCtx = document.getElementById('categoryChart').getContext('2d');
+    const categoryChart = new Chart(categoryChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                data: categoryData,
+                backgroundColor: categoryColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#374151'
+                    }
+                }
+            }
+        }
+    });
+</script>
 @endsection

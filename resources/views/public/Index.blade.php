@@ -57,61 +57,30 @@
 <section class="flex flex-col md:flex-row md:justify-between gap-8 max-w-7xl mx-auto mb-16 px-4">
   {{-- Berita Terkini --}}
   <div class="md:w-1/2">
-    <h3 class="text-indigo-700 font-semibold mb-8 text-xl">BERITA TERKINI</h3>
+    <h3 class="text-black font-bold leading-snug mb-8 text-xl">BERITA TERKINI</h3>
 
-    {{-- News Cards --}}
-    <article class="flex gap-4 mb-6">
-      <img
-        src="{{ asset('assets/images/banner.png') }}"
-        alt="Vape"
-        class="w-48 h-32 object-cover rounded-lg flex-shrink-0"
-      />
-      <div>
-        <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2"
-          >Health</span
-        >
-        <time class="text-gray-600 text-xs mb-2 block">29/04/2025, 21:00 WIB</time>
-        <span class="block bg-blue-600 w-[20px] h-[2px] mb-3 rounded"></span>
-        <h4 class="font-semibold text-sm">Polisi Ungkap Vape Ilegal Berisi Etomidate, Ketahui Bahayanya</h4>
-      </div>
-    </article>
-
-    <article class="flex gap-4 mb-6">
-      <img
-        src="{{ asset('assets/images/banner.png') }}"
-        alt="Berita 2"
-        class="w-48 h-32 object-cover rounded-lg flex-shrink-0"
-      />
-      <div>
-        <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2"
-          >Politics</span
-        >
-        <time class="text-gray-600 text-xs mb-2 block">28/04/2025, 15:30 WIB</time>
-        <span class="block bg-blue-600 w-[20px] h-[2px] mb-3 rounded"></span>
-        <h4 class="font-semibold text-sm">Pemerintah Rilis Kebijakan Baru Soal Pajak UMKM</h4>
-      </div>
-    </article>
-
-    <article class="flex gap-4 mb-6">
-      <img
-        src="{{ asset('assets/images/banner.png') }}"
-        alt="Berita 3"
-        class="w-48 h-32 object-cover rounded-lg flex-shrink-0"
-      />
-      <div>
-        <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2"
-          >Sport</span
-        >
-        <time class="text-gray-600 text-xs mb-2 block">28/04/2025, 10:00 WIB</time>
-        <span class="block bg-blue-600 w-[20px] h-[2px] mb-3 rounded"></span>
-        <h4 class="font-semibold text-sm">Timnas Indonesia U-23 Siap Tampil di Final AFC 2025</h4>
-      </div>
-    </article>
+    <div class="flex flex-col gap-9">
+      @foreach ($latestArticles as $article)
+        <a href="{{ route('article.show', $article->slug) }}" class="flex items-center gap-4 border border-gray-200 rounded-lg shadow-sm p-3 hover:-translate-y-1 hover:shadow-md transition">
+          <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}" class="w-36 h-24 object-cover rounded-md flex-shrink-0">
+          <div>
+            <span class="inline-block bg-indigo-700 text-white px-2 py-0.5 rounded text-xs font-semibold mb-2">
+              {{ $article->category->name }}
+            </span>
+            <time class="text-gray-600 text-xs mb-2 block">
+              {{ $article->created_at->format('d/m/Y, H:i') }} WIB
+            </time>
+            <span class="block bg-blue-600 w-[20px] h-[2px] mb-3 rounded"></span>
+            <h4 class="font-semibold text-sm">{{ $article->title }}</h4>
+          </div>
+        </a>
+      @endforeach
+    </div>
   </div>
 
   {{-- Terpopuler --}}
   <div class="md:w-1/2">
-    <h3 class="text-indigo-700 font-semibold mb-6 text-xl">TERPOPULER</h3>
+    <h3 class="text-black font-bold leading-snug mb-6 text-xl">TERPOPULER</h3>
 
     <article class="flex items-center gap-3 mb-3 p-2 bg-gray-50 rounded-md shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1">
         <img

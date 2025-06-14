@@ -15,6 +15,9 @@ class PublicController extends Controller
     {
 	$categories = Category::all();
 
+        // 3 artikel untuk berita terkini
+        $latestArticles = Article::latest()->take(3)->with('category')->get();
+
         // 1 artikel terbaru per kategori (untuk bagian atas)
         $latestPerCategory = Category::with(['articles' => function ($query) {
             $query->latest()->limit(1);
@@ -41,7 +44,8 @@ class PublicController extends Controller
             'categories',
             'latestPerCategory',
             'categoriesWithArticles',
-            'topAuthors'
+            'topAuthors',
+            'latestArticles'
         ));
     }
 
