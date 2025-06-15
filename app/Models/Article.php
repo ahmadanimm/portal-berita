@@ -26,4 +26,24 @@ class Article extends Model
         return $this->belongsToMany(User::class, 'article_user_saved')->withTimestamps();
     }
 
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'article_user_likes')->withTimestamps();
+    }
+
+    public function dislikedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'article_user_dislike')->withTimestamps();
+    }
+
+    public function bookmarkedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'article_user_saved');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    
 }

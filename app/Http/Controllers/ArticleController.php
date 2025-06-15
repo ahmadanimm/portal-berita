@@ -157,7 +157,62 @@ class ArticleController extends Controller
         return redirect()->route('admin.articles.index')->with('success', 'Artikel yang dipilih berhasil dihapus.');
     }
 
+    public function like(Article $article)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
 
+        $user = auth()->user();
+
+        // Hapus dislike jika sebelumnya sudah dislike
+        $article->dislikedByUsers()->detach($user->id);
+
+        // Toggle like: kalau sudah like, hapus; kalau belum, tambah
+        if ($article->likedByUsers()->where('user_id', $user->id)->exists()) {
+            $article->likedByUsers()->detach($user->id);
+        } else {
+            $article->likedByUsers()->attach($user->id);
+        }
+
+        return back();
+    }
+
+    public function dislike(Article $article)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Hapus like jika sebelumnya sudah like
+        $article->likedByUsers()->detach($user->id);
+
+        // Toggle dislike: kalau sudah dislike, hapus; kalau belum, tambah
+        if ($article->dislikedByUsers()->where('user_id', $user->id)->exists()) {
+            $article->dislikedByUsers()->detach($user->id);
+        } else {
+            $article->dislikedByUsers()->attach($user->id);
+        }
+
+        return back();
+    }
+
+    public function bookmark(Article $article)
+    {
+        $user = auth()->user();
+
+        if ($user->bookmarkedArticles->contains($article->id)) {
+            // Sudah disimpan, hapus dari bookmark
+            $user->bookmarkedArticles()->detach($article->id);
+        } else {
+            // Belum disimpan, tambahkan
+            $user->bookmarkedArticles()->attach($article->id);
+        }
+
+        return back();
+    }
 
 
 }

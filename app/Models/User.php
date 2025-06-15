@@ -37,6 +37,11 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
@@ -45,6 +50,26 @@ class User extends Authenticatable
     public function savedArticles()
     {
         return $this->belongsToMany(Article::class, 'article_user_saved')->withTimestamps();
+    }
+
+    public function likedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_likes')->withTimestamps();
+    }
+
+    public function dislikedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_dislike')->withTimestamps();
+    }
+
+    public function bookmarkedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_saved');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
 }
