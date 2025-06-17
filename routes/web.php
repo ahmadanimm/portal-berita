@@ -8,6 +8,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CategoryController; // Controller utama
+use App\Http\Controllers\AuthorController as PublicAuthorController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Controller admin pakai alias
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -59,11 +60,13 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/cari', [PublicController::class, 'search'])->name('search');
+Route::get('/authors/{author}', [PublicAuthorController::class, 'show'])->name('author.show');
 Route::post('/articles/{article}/like', [ArticleController::class, 'like'])->name('articles.like')->middleware('auth');
 Route::post('/articles/{article}/dislike', [ArticleController::class, 'dislike'])->name('articles.dislike');
 Route::post('/articles/{article}/bookmark', [ArticleController::class, 'bookmark'])->name('articles.bookmark');
 Route::post('/articles/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/articles/{article}/rate', [RatingController::class, 'store'])->name('ratings.store');
+
 
 
 

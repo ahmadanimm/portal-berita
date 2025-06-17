@@ -55,36 +55,127 @@
   </div>
 
 
-  <!-- Tabs -->
-  <div class="flex flex-wrap justify-center md:justify-start gap-4 border-b pb-4 mb-6">
-    <button class="flex items-center gap-2 px-4 py-2 border-2 border-blue-600 rounded-full font-semibold text-sm text-blue-600">
-      <i class="bi bi-bookmark-fill"></i> Konten yang disimpan
-    </button>
-    <button class="flex items-center gap-2 px-4 py-2 border rounded-full font-semibold text-sm text-gray-600 hover:bg-gray-100">
-      <i class="bi bi-hand-thumbs-up-fill"></i> Konten yang disukai
-    </button>
-    <button class="flex items-center gap-2 px-4 py-2 border rounded-full font-semibold text-sm text-gray-600 hover:bg-gray-100">
-      <i class="bi bi-clock-history"></i> Riwayat berlangganan
-    </button>
+  <div x-data="{ tab: 'saved' }">
+    <div class="flex flex-wrap justify-center md:justify-start gap-4 border-b pb-4 mb-6">
+      <button
+        @click="tab = 'saved'"
+        :class="tab === 'saved' ? 'border-blue-600 text-blue-600 border-2' : 'border text-gray-600 hover:bg-gray-100'"
+        class="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm"
+      >
+        <i class="bi bi-bookmark-fill"></i> Konten yang disimpan
+      </button>
+
+      <button
+        @click="tab = 'liked'"
+        :class="tab === 'liked' ? 'border-blue-600 text-blue-600 border-2' : 'border text-gray-600 hover:bg-gray-100'"
+        class="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm"
+      >
+        <i class="bi bi-hand-thumbs-up-fill"></i> Konten yang disukai
+      </button>
+
+      {{-- TAB BARU: Riwayat Berlangganan --}}
+      <button
+        @click="tab = 'subscriptions'"
+        :class="tab === 'subscriptions' ? 'border-blue-600 text-blue-600 border-2' : 'border text-gray-600 hover:bg-gray-100'"
+        class="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm"
+      >
+        <i class="bi bi-receipt"></i> Riwayat Berlangganan
+      </button>
+    </div>
+
+    <div x-show="tab === 'saved'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @forelse ($savedArticles as $article)
+        <a href="{{ route('article.show', $article->slug) }}" class="block bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
+          <div class="bg-white p-2 rounded-lg overflow-hidden">
+            <div class="relative">
+              <img src="{{ asset('storage/' . $article->thumbnail) }}" 
+                   alt="{{ $article->title }}" 
+                   class="w-full h-44 object-cover rounded-md">
+              <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                {{ $article->category->name }}
+              </span>
+            </div>
+          </div>
+          <div class="p-4 text-left">
+            <h3 class="font-semibold text-sm mb-3 leading-snug text-black hover:text-blue-600">
+              {{ Str::limit($article->title, 80) }}
+            </h3>
+            <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <span>{{ $article->created_at->format('d/m/Y, H:i') }} WIB</span>
+              @if ($article->is_premium)
+                <span class="bg-yellow-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  Premium
+                </span>
+              @endif
+            </div>
+          </div>
+        </a>
+      @empty
+        <p class="text-sm text-gray-500 col-span-full">Tidak ada artikel yang disimpan.</p>
+      @endforelse
+    </div>
+
+    <div x-show="tab === 'liked'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @forelse ($likedArticles as $article)
+        <a href="{{ route('article.show', $article->slug) }}" class="block bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
+          <div class="bg-white p-2 rounded-lg overflow-hidden">
+            <div class="relative">
+              <img src="{{ asset('storage/' . $article->thumbnail) }}" 
+                   alt="{{ $article->title }}" 
+                   class="w-full h-44 object-cover rounded-md">
+              <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                {{ $article->category->name }}
+              </span>
+            </div>
+          </div>
+          <div class="p-4 text-left">
+            <h3 class="font-semibold text-sm mb-3 leading-snug text-black hover:text-blue-600">
+              {{ Str::limit($article->title, 80) }}
+            </h3>
+            <div class="w-10 h-1 bg-blue-500 mb-2"></div>
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <span>{{ $article->created_at->format('d/m/Y, H:i') }} WIB</span>
+              @if ($article->is_premium)
+                <span class="bg-yellow-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  Premium
+                </span>
+              @endif
+            </div>
+          </div>
+        </a>
+      @empty
+        <p class="text-sm text-gray-500 col-span-full">Belum ada artikel yang disukai.</p>
+      @endforelse
+    </div>
+
+    {{-- KONTEN BARU: Riwayat Berlangganan --}}
+    <div x-show="tab === 'subscriptions'" class="bg-white rounded-lg p-6 shadow-md">
+        <h4 class="text-lg font-semibold text-gray-800 mb-4">Riwayat Langganan Saya</h4>
+        @forelse ($user->subscriptions as $subscription)
+            <div class="border-b border-gray-200 py-4 last:border-b-0">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-medium text-gray-900">{{ $subscription->plan_name }}</span>
+                    @if ($subscription->status === 'active')
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Aktif</span>
+                    @elseif ($subscription->status === 'cancelled')
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Dibatalkan</span>
+                    @else
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ ucfirst($subscription->status) }}</span>
+                    @endif
+                </div>
+                <p class="text-sm text-gray-600">Mulai: {{ \Carbon\Carbon::parse($subscription->starts_at)->format('d M Y') }}</p>
+                <p class="text-sm text-gray-600">Berakhir: {{ \Carbon\Carbon::parse($subscription->ends_at)->format('d M Y') }}</p>
+                @if ($subscription->price) {{-- Asumsi ada kolom price --}}
+                    <p class="text-sm text-gray-600">Harga: Rp{{ number_format($subscription->price, 0, ',', '.') }}</p>
+                @endif
+                {{-- Anda bisa menambahkan detail lain seperti transaction_id, payment_method, dll. --}}
+            </div>
+        @empty
+            <p class="text-sm text-gray-500">Anda belum memiliki riwayat langganan.</p>
+        @endforelse
+    </div>
   </div>
 
-  <!-- Saved Articles -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    @foreach ($savedArticles as $article)
-      <div class="bg-white border rounded-xl p-2 shadow-sm">
-        <div class="relative">
-          <img src="{{ asset('storage/' . $article->thumbnail) }}" class="w-full h-44 object-cover rounded-md">
-          <span class="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-            {{ $article->category->name }}
-          </span>
-        </div>
-        <div class="mt-3 px-2">
-          <h3 class="font-semibold text-sm mb-2 leading-tight">{{ Str::limit($article->title, 80) }}</h3>
-          <div class="w-10 h-1 bg-blue-500 mb-1"></div>
-          <p class="text-xs text-gray-600">{{ $article->created_at->format('d/m/Y, H:i') }} WIB</p>
-        </div>
-      </div>
-    @endforeach
-  </div>
 </div>
 @endsection

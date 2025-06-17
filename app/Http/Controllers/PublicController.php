@@ -37,6 +37,12 @@ class PublicController extends Controller
             ->take(6)
             ->get();
 
+        $popularArticles = Article::with('category')
+            ->withCount('likedByUsers') 
+            ->orderByDesc('liked_by_users_count')
+            ->take(4)
+            ->get();
+
         return view('public.index', compact(
             'headline',
             'latest',
@@ -45,7 +51,8 @@ class PublicController extends Controller
             'latestPerCategory',
             'categoriesWithArticles',
             'topAuthors',
-            'latestArticles'
+            'latestArticles',
+            'popularArticles'
         ));
     }
 

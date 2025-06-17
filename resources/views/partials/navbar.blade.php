@@ -21,15 +21,11 @@
       </form>
     </div>
     <div class="flex items-center gap-4">
-      <button
-        class="bg-indigo-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-indigo-800 transition"
-      >
-        Berlangganan
-      </button>
+      <a href="{{ route('subscription.index') }}" class="bg-blue-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-800 transition">Berlangganan</a>
       @guest
         <!-- Saat belum login -->
         <a href="{{ route('login') }}"
-        class="flex items-center gap-1 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-semibold hover:bg-indigo-200 transition"
+        class="flex items-center gap-1 bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-indigo-200 transition"
         >
             <i class="bi bi-person-circle text-lg"></i> Login
         </a>
@@ -39,9 +35,14 @@
       <div x-data="{ open: false }" class="relative">
           <button
               @click="open = !open"
-              class="flex items-center gap-1 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-semibold hover:bg-indigo-200 transition"
+              class="flex items-center gap-1 bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-indigo-200 transition"
           >
-              <i class="bi bi-person-circle text-lg"></i> {{ Auth::user()->name }}
+              @if (Auth::user()->profile_photo)
+                  <img src="{{ asset('storage/profile_photos/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="w-6 h-6 object-cover rounded-full mr-1">
+              @else
+                  <i class="bi bi-person-circle text-xl mr-1"></i>
+              @endif
+              {{ Auth::user()->name }}
           </button>
 
           <!-- Dropdown menu -->
@@ -74,7 +75,7 @@
   <div class="flex flex-wrap justify-center gap-3 py-4">
     @foreach ($nav_categories as $category)
       <a href="{{ route('category.show', $category->slug) }}" 
-        class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-indigo-100 transition">
+        class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-blue-100 transition">
 
         {{-- Ambil icon dari kolom icon --}}
         <img src="{{ asset('storage/' . $category->icon) }}" 

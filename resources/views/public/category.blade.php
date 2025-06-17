@@ -1,9 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
-@include('partials.navbar')
-
-@section('header')
-<h2 class="text-3xl font-bold mb-10 text-center">
+@section('hero')
+<h2 class="text-3xl font-bold mt-10 mb-10 text-center">
   Explore Our <br>
   <span class="text-black">{{ $category->name }} News</span>
 </h2>

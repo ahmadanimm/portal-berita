@@ -13,7 +13,7 @@
 
     <!-- Kanan: Tombol Beranda (siku, seperti Edit Profil) -->
     <a href="/profil"
-       class="flex items-center gap-2 text-indigo-700 bg-indigo-100 hover:bg-indigo-200 px-5 py-2 rounded font-semibold transition">
+       class="flex items-center gap-2 text-blue-700 bg-blue-100 hover:bg-blue-200 px-5 py-2 rounded font-semibold transition">
       <i class="bi bi-person-circle text-lg"></i>
       Profil
     </a>
@@ -58,7 +58,6 @@
     </div>
 
 
-    <!-- 1 Bulan -->
     <div class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between border border-gray-200">
       <div>
         <h3 class="text-lg font-semibold mb-4">1 Bulan</h3>
@@ -70,11 +69,16 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 90.000 / bulan</p>
-        <a href="/profil" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">Berlangganan</a>
+        {{-- Mengirim '1month' sebagai type --}}
+        <form action="{{ route('subscription.subscribe', ['type' => '1month']) }}" method="POST">
+            @csrf
+            <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">
+                Berlangganan
+            </button>
+        </form>
       </div>
     </div>
 
-    <!-- 2 Bulan -->
     <div class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between border border-gray-200">
       <div>
         <h3 class="text-lg font-semibold mb-4">2 Bulan</h3>
@@ -86,11 +90,16 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 170.000 / 2 bulan</p>
-        <a href="/profil" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">Berlangganan</a>
+        {{-- Mengirim '2months' sebagai type --}}
+        <form action="{{ route('subscription.subscribe', ['type' => '2months']) }}" method="POST">
+            @csrf
+            <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">
+                Berlangganan
+            </button>
+        </form>
       </div>
     </div>
 
-    <!-- 3 Bulan -->
     <div class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between border border-gray-200">
       <div>
         <h3 class="text-lg font-semibold mb-4">3 Bulan</h3>
@@ -102,9 +111,16 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 250.000 / 3 bulan</p>
-        <a href="/profil" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">Berlangganan</a>
+        {{-- Mengirim '3months' sebagai type --}}
+        <form action="{{ route('subscription.subscribe', ['type' => '3months']) }}" method="POST">
+            @csrf
+            <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">
+                Berlangganan
+            </button>
+        </form>
       </div>
     </div>
+
   </div>
 </div>
 @endsection

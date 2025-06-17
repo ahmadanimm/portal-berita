@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Subscription;
 
 class ProfileController extends Controller
 {
@@ -17,9 +18,14 @@ class ProfileController extends Controller
             return redirect()->route('login');
         }
 
-        $savedArticles = $user->savedArticles()->get();
+        $user->load(['subscriptions' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
 
-        return view('public.profile', compact('savedArticles', 'user'));
+        $savedArticles = $user->savedArticles()->with('category')->latest()->get();
+        $likedArticles = $user->likedArticles()->with('category')->latest()->get();
+
+        return view('public.profile', compact('savedArticles', 'user', 'likedArticles'));
     }
 
     public function edit()
