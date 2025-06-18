@@ -7,18 +7,70 @@
         </a>
       </div>
       <div class="border-l-2 border-gray-400 h-11"></div>
-      <form method="GET" action="{{ route('search') }}" class="relative">
-        <input
-            type="text"
-            name="query"
-            value="{{ request('query') }}"
-            placeholder="Cari tokoh, topik atau peristiwa"
-            class="w-80 rounded-full border border-gray-300 pl-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        />
-        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700">
-            <i class="bi bi-search"></i>
-        </span>
+      <form method="GET" action="{{ route('search') }}" class="relative" id="searchForm">
+          {{-- Ikon Search di kiri --}}
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" id="searchIcon">
+              <i class="bi bi-search"></i>
+          </span>
+
+          {{-- Input --}}
+          <input
+              type="text"
+              name="query"
+              id="searchInput"
+              value="{{ request('query') }}"
+              placeholder="Cari tokoh, topik atau peristiwa"
+              class="w-80 rounded-full border border-gray-300 pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              autocomplete="off"
+          />
+
+          {{-- Tombol X --}}
+          <span
+              id="clearSearch"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer {{ request('query') ? '' : 'hidden' }}"
+          >
+              <i class="bi bi-x-circle-fill"></i>
+          </span>
       </form>
+
+      <script>
+        const input = document.getElementById('searchInput');
+        const form = document.getElementById('searchForm');
+        const searchIcon = document.getElementById('searchIcon');
+        const clearBtn = document.getElementById('clearSearch');
+
+        let typingTimer;
+        const doneTypingInterval = 500;
+
+        input.addEventListener('keyup', function () {
+          clearTimeout(typingTimer);
+
+          if (input.value.trim() === '') {
+            clearBtn.classList.add('hidden');
+            // Jika kosong, langsung redirect ke beranda
+            window.location.href = '/';
+          } else {
+            clearBtn.classList.remove('hidden');
+            typingTimer = setTimeout(() => {
+              form.submit();
+            }, doneTypingInterval);
+          }
+        });
+
+        input.addEventListener('keydown', function () {
+          clearTimeout(typingTimer);
+        });
+
+        // Klik ikon search langsung kirim form
+        searchIcon?.addEventListener('click', () => {
+          if (input.value.trim()) form.submit();
+        });
+
+        // Klik X = kosongkan dan kembali ke beranda
+        clearBtn?.addEventListener('click', () => {
+          window.location.href = '/';
+        });
+      </script>
     </div>
     <div class="flex items-center gap-4">
       <a href="{{ route('subscription.index') }}" class="bg-blue-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-800 transition">Berlangganan</a>

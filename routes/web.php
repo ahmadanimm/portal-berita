@@ -7,7 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
-use App\Http\Controllers\CategoryController; // Controller utama
+use App\Http\Controllers\CategoryController; 
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthorController as PublicAuthorController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Controller admin pakai alias
 use App\Http\Controllers\Admin\StatsController;
@@ -23,7 +24,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect('/');
     })->name('dashboard');
 
-    Route::get('/cari', [PublicController::class, 'search'])->name('search');
 
     Route::get('/profil', [ProfileController::class, 'index'])->name('profile');
 
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
-Route::get('/cari', [PublicController::class, 'search'])->name('search');
+Route::get('/cari', [SearchController::class, 'index'])->name('search');
 Route::get('/authors/{author}', [PublicAuthorController::class, 'show'])->name('author.show');
 Route::post('/articles/{article}/like', [ArticleController::class, 'like'])->name('articles.like')->middleware('auth');
 Route::post('/articles/{article}/dislike', [ArticleController::class, 'dislike'])->name('articles.dislike');
