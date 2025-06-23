@@ -13,29 +13,26 @@ class Author extends Model
     protected $fillable = ['name', 'avatar', 'average_rating', 'ratings_count'];
 
     protected $casts = [
-        'average_rating' => 'float', // <<< TAMBAHKAN INI
+        'average_rating' => 'float', 
     ];
 
-    // Relasi dari Author ke Article (seorang author bisa menulis banyak article)
     public function articles()
     {
-        return $this->hasMany(Article::class, 'author_id'); // Pastikan ini 'author_id'
+        return $this->hasMany(Article::class, 'author_id'); 
     }
 
-    // Relasi ke rating yang diterima oleh artikel yang dia tulis
     public function receivedRatings()
     {
         return $this->hasManyThrough(
-            Rating::class,    // Model target (Rating)
-            Article::class,   // Model perantara (Article)
-            'author_id',      // Foreign key di tabel articles yang merujuk ke authors.id
-            'article_id',     // Foreign key di tabel ratings yang merujuk ke articles.id
-            'id',             // Kunci lokal di tabel authors
-            'id'              // Kunci lokal di tabel articles
+            Rating::class,    
+            Article::class,   
+            'author_id',      
+            'article_id',     
+            'id',             
+            'id'              
         );
     }
 
-    // Metode untuk menghitung dan memperbarui rating penulis
     public function updateAuthorRating(): void
     {
         $totalRatingSum = $this->receivedRatings()->sum('rating');

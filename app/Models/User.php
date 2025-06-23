@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    // Hapus HasApiTokens dari sini:
+
     use HasFactory, Notifiable;
 
     protected $fillable = [
@@ -48,15 +48,9 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    // Perhatikan: Metode user() di model User biasanya merujuk ke parent user jika ada,
-    // atau bisa dihapus jika tidak ada hierarki user.
-    // Jika user ini adalah penulis, dan Anda punya Article yang memiliki user_id,
-    // maka Article memiliki relasi belongsTo(User::class).
-    // Tapi User itu sendiri umumnya tidak memiliki belongsTo(User::class) ke dirinya sendiri.
-    // Pastikan ini benar sesuai desain database Anda.
     public function user()
     {
-        return $this->belongsTo(User::class); // Ini mungkin perlu disesuaikan atau dihapus
+        return $this->belongsTo(User::class); 
     }
 
     public function articles()
@@ -96,24 +90,24 @@ class User extends Authenticatable
 
     public function receivedRatings()
     {
-        // Relasi ke rating yang diterima oleh artikel yang dia tulis
+        
         return $this->hasManyThrough(
-            Rating::class, // Model target (Rating)
-            Article::class, // Model perantara (Article)
-            'user_id',      // Foreign key di tabel articles yang merujuk ke users.id
-            'article_id',   // Foreign key di tabel ratings yang merujuk ke articles.id
-            'id',           // Local key di tabel users
-            'id'            // Local key di tabel articles
+            Rating::class, 
+            Article::class, 
+            'user_id',      
+            'article_id',   
+            'id',           
+            'id'            
         );
     }
 
-    // Metode untuk menghitung dan memperbarui rating penulis
+    
     public function updateAuthorRating()
     {
-        // Hitung total rating dan jumlah rating untuk penulis ini
+        
         $ratingData = DB::table('ratings')
             ->join('articles', 'ratings.article_id', '=', 'articles.id')
-            ->where('articles.user_id', $this->id) // Asumsikan user_id di articles adalah author
+            ->where('articles.user_id', $this->id) 
             ->select(DB::raw('SUM(ratings.rating) as total_rating'), DB::raw('COUNT(ratings.rating) as rating_count'))
             ->first();
 

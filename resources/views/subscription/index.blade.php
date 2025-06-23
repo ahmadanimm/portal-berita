@@ -1,17 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Navbar Manual -->
+
 <header class="py-4">
   <div class="container mx-auto flex justify-between items-center px-4 max-w-7xl">
-    <!-- Kiri: Logo (lebih besar) -->
+
     <a href="{{ url('/') }}">
       <img src="{{ asset('assets/images/logo 170x50.png') }}" 
            alt="Logo Ruang Kabar" 
            class="w-[170px] h-[50px] object-contain" />
     </a>
 
-    <!-- Kanan: Tombol Beranda (siku, seperti Edit Profil) -->
     <a href="/profil"
        class="flex items-center gap-2 text-blue-700 bg-blue-100 hover:bg-blue-200 px-5 py-2 rounded font-semibold transition">
       <i class="bi bi-person-circle text-lg"></i>
@@ -29,7 +28,7 @@
   <div class="w-10 h-1 mt-1 mb-10 bg-blue-500"></div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <!-- Uji Coba 7 Hari -->
+
     <div class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between border border-gray-200">
     <div>
         <h3 class="text-lg font-semibold mb-4">Uji Coba 7 Hari</h3>
@@ -69,7 +68,7 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 90.000 / bulan</p>
-        {{-- Mengirim '1month' sebagai type --}}
+
         <form action="{{ route('subscription.subscribe', ['type' => '1month']) }}" method="POST">
             @csrf
             <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">
@@ -90,7 +89,7 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 170.000 / 2 bulan</p>
-        {{-- Mengirim '2months' sebagai type --}}
+
         <form action="{{ route('subscription.subscribe', ['type' => '2months']) }}" method="POST">
             @csrf
             <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">
@@ -111,7 +110,7 @@
       </div>
       <div class="mt-6 border-t pt-4">
         <p class="text-gray-700 font-semibold">Rp 250.000 / 3 bulan</p>
-        {{-- Mengirim '3months' sebagai type --}}
+
         <form action="{{ route('subscription.subscribe', ['type' => '3months']) }}" method="POST">
             @csrf
             <button type="submit" class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full text-center">

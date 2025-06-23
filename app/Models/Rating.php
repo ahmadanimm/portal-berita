@@ -11,7 +11,6 @@ class Rating extends Model
 
     protected $fillable = ['user_id', 'article_id', 'rating'];
 
-    // Relasi opsional jika ingin
     public function user()
     {
         return $this->belongsTo(User::class);

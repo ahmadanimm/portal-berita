@@ -17,7 +17,7 @@ class SubscriptionExpiring extends Notification
 
     public function via($notifiable)
     {
-        return ['mail']; // bisa ditambah 'database', 'sms', dll
+        return ['mail']; 
     }
 
     public function toMail($notifiable)

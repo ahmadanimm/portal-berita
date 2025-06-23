@@ -17,7 +17,7 @@
 
       @if ($isLocked)
         <div onclick="showPremiumModal()" class="cursor-pointer bg-white rounded-xl shadow-md border p-2 transition-transform duration-300 transform hover:-translate-y-1">
-          {{-- isi card premium yang tidak bisa diklik --}}
+
           <div class="bg-white p-2 rounded-lg overflow-hidden">
             <div class="relative">
               <img src="{{ asset('storage/' . $article->thumbnail) }}" 
@@ -77,7 +77,6 @@
   </div>
 </section>
 
-{{-- MODAL UNTUK PREMIUM --}}
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>
@@ -90,7 +89,6 @@
   </div>
 </div>
 
-{{-- SCRIPT UNTUK MODAL --}}
 <script>
   function showPremiumModal() {
     document.getElementById('premiumModal').classList.remove('hidden');

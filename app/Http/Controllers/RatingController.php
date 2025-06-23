@@ -39,9 +39,8 @@ class RatingController extends Controller
             $message = 'Terima kasih atas ulasan Anda!';
         }
 
-        // PENTING: Ganti $article->user menjadi $article->author
-        if ($article->author) { // Pastikan relasi 'author' di Article mengarah ke penulis
-            $article->author->updateAuthorRating(); // <<< PERHATIKAN PERUBAHAN INI
+        if ($article->author) { 
+            $article->author->updateAuthorRating(); 
         } else {
             // Opsional: Log jika artikel tidak memiliki penulis yang terkait
             // Log::warning("Artikel ID {$article->id} tidak memiliki penulis yang terkait untuk update rating.");

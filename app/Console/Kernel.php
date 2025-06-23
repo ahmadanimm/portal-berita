@@ -8,7 +8,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        \App\Console\Commands\NotifySubscriptionExpiring::class, // daftar command buatanmu
+        \App\Console\Commands\NotifySubscriptionExpiring::class, 
     ];
 
     protected function schedule(Schedule $schedule): void

@@ -14,7 +14,7 @@ class CheckSubscriptionStatus
         $user = $request->user();
 
         if ($user && $user->is_subscribed && $user->subscribed_until && $user->subscribed_until->lt(now())) {
-            // Langganan kadaluarsa, nonaktifkan
+           
             $user->update([
                 'is_subscribed' => false,
                 'subscribed_until' => null,

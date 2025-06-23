@@ -21,7 +21,6 @@
                 <h1 class="text-xl font-bold">Reset Password</h1>
             </div>
 
-            <!-- Form Reset -->
             <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
                 @csrf
 

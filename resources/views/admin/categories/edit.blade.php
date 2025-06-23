@@ -13,14 +13,12 @@
     @csrf
     @method('PUT')
 
-    <!-- Nama -->
     <div>
         <label class="block font-semibold mb-1">Nama Kategori</label>
         <input type="text" name="name" value="{{ old('name', $category->name) }}" required
                class="w-full border border-gray-300 rounded px-3 py-2">
     </div>
 
-    <!-- Upload Ikon Baru -->
     <div>
         <label class="block font-semibold mb-1">Ganti Ikon (Opsional)</label>
         <input type="file" name="icon" accept="image/*"
@@ -32,7 +30,6 @@
         @endif
     </div>
 
-    <!-- Tombol -->
     <div class="mt-6">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Simpan

@@ -70,7 +70,7 @@
 @endphp
 
 <section class="flex flex-col md:flex-row md:justify-between gap-8 max-w-7xl mx-auto mb-16 px-4">
-  {{-- Berita Terkini --}}
+
   <div class="md:w-1/2">
     <h3 class="text-black font-bold leading-snug mb-8 text-xl">BERITA TERKINI</h3>
 
@@ -121,7 +121,6 @@
     </div>
   </div>
 
-  {{-- Terpopuler --}}
   <div class="md:w-1/2">
     <h3 class="text-black font-bold leading-snug mb-8 text-xl">TERPOPULER</h3>
 
@@ -171,7 +170,6 @@
   </div>
 </section>
 
-{{-- MODAL UNTUK PREMIUM --}}
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>
@@ -296,7 +294,6 @@
   @endif
 @endforeach
 
-{{-- MODAL UNTUK PREMIUM --}}
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>

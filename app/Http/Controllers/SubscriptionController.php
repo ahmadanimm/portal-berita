@@ -5,22 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Subscription; // Pastikan ini diimpor!
+use App\Models\Subscription; 
 
 class SubscriptionController extends Controller
 {
     public function index()
     {
-        return view('subscription.index'); // View berlangganan
+        return view('subscription.index'); 
     }
 
     public function subscribe(Request $request, $type)
     {
         $user = Auth::user();
 
-        // 1. **PENCEGAHAN DUPLIKASI UTAMA DI SINI**
-        // Cek apakah pengguna sudah memiliki langganan aktif (termasuk trial)
-        // Berdasarkan kolom di tabel users yang Anda update
         if ($user->is_subscribed && $user->subscription_end && $user->subscription_end->isFuture()) {
             return redirect()->route('profile')->with('error', 'Anda sudah memiliki langganan aktif hingga ' . $user->subscription_end->format('d M Y') . '.');
         }
@@ -61,7 +58,7 @@ class SubscriptionController extends Controller
                 if ($user->trial_used) {
                     return redirect()->route('profile')->with('error', 'Uji coba hanya dapat digunakan sekali.');
                 }
-                // Update kolom di tabel users untuk uji coba
+                
                 $user->is_subscribed = true;
                 $user->subscription_type = $type;
                 $user->subscription_start = $startsAt;
@@ -72,7 +69,7 @@ class SubscriptionController extends Controller
                 return redirect()->route('profile')->with('success', 'Uji coba 7 hari berhasil diaktifkan.');
 
             } else {
-                // Logika untuk Langganan Berbayar
+                
                 Subscription::create([
                     'user_id' => $user->id,
                     'plan_name' => $selectedPlan['plan_name'],
@@ -82,7 +79,6 @@ class SubscriptionController extends Controller
                     'status' => 'active',
                 ]);
 
-                // Update kolom di tabel `users` untuk status langganan terkini
                 $user->is_subscribed = true;
                 $user->subscription_type = $type;
                 $user->subscription_start = $startsAt;
@@ -108,18 +104,9 @@ class SubscriptionController extends Controller
         $user->subscription_end = null;
         $user->save();
 
-        // Opsional: Anda mungkin ingin menandai langganan aktif terakhir di tabel `subscriptions` sebagai 'cancelled'
-        // $latestSubscription = $user->subscriptions()->where('status', 'active')->latest()->first();
-        // if ($latestSubscription) {
-        //     $latestSubscription->status = 'cancelled';
-        //     $latestSubscription->save();
-        // }
-
         return redirect()->route('profile')->with('success', 'Berlangganan telah dihentikan.');
     }
 
-    // Method startTrial sekarang sudah tidak diperlukan secara terpisah jika diintegrasikan ke subscribe()
-    // Jika Anda masih ingin memilikinya, pastikan memanggil subscribe('trial')
     public function startTrial(Request $request)
     {
         return $this->subscribe($request, 'trial');

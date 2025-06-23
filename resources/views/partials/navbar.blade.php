@@ -8,12 +8,11 @@
       </div>
       <div class="border-l-2 border-gray-400 h-11"></div>
       <form method="GET" action="{{ route('search') }}" class="relative" id="searchForm">
-          {{-- Ikon Search di kiri --}}
+
           <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" id="searchIcon">
               <i class="bi bi-search"></i>
           </span>
 
-          {{-- Input --}}
           <input
               type="text"
               name="query"
@@ -24,7 +23,6 @@
               autocomplete="off"
           />
 
-          {{-- Tombol X --}}
           <span
               id="clearSearch"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer {{ request('query') ? '' : 'hidden' }}"
@@ -47,7 +45,7 @@
 
           if (input.value.trim() === '') {
             clearBtn.classList.add('hidden');
-            // Jika kosong, langsung redirect ke beranda
+            
             window.location.href = '/';
           } else {
             clearBtn.classList.remove('hidden');
@@ -61,12 +59,11 @@
           clearTimeout(typingTimer);
         });
 
-        // Klik ikon search langsung kirim form
+        
         searchIcon?.addEventListener('click', () => {
           if (input.value.trim()) form.submit();
         });
 
-        // Klik X = kosongkan dan kembali ke beranda
         clearBtn?.addEventListener('click', () => {
           window.location.href = '/';
         });
@@ -75,7 +72,7 @@
     <div class="flex items-center gap-4">
       <a href="{{ route('subscription.index') }}" class="bg-blue-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-800 transition">Berlangganan</a>
       @guest
-        <!-- Saat belum login -->
+        
         <a href="{{ route('login') }}"
         class="flex items-center gap-1 bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-indigo-200 transition"
         >
@@ -97,7 +94,6 @@
               {{ Auth::user()->name }}
           </button>
 
-          <!-- Dropdown menu -->
           <div x-show="open"
               @click.outside="open = false"
               x-transition
@@ -129,7 +125,6 @@
       <a href="{{ route('category.show', $category->slug) }}" 
         class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-blue-100 transition">
 
-        {{-- Ambil icon dari kolom icon --}}
         <img src="{{ asset('storage/' . $category->icon) }}" 
               alt="" 
               class="w-5 h-5 object-contain" />

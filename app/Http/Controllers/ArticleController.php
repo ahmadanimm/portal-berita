@@ -19,7 +19,7 @@ class ArticleController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $articles = $query->latest()->paginate(10); // <--- pakai paginate
+        $articles = $query->latest()->paginate(10); 
 
         return view('admin.articles.index', compact('articles'));
     }
@@ -34,20 +34,17 @@ class ArticleController extends Controller
     public function show($slug)
     {
         $article = Article::where('slug', $slug)
-            ->with(['author', 'category']) // pastikan relasi dimuat
+            ->with(['author', 'category']) 
             ->firstOrFail();
         
-        // Cek apakah artikel ini premium
         if ($article->is_premium) {
             $user = auth()->user();
 
-            // Jika belum login atau belum berlangganan
             if (!$user || !$user->is_subscribed) {
                 return redirect()->route('profile')->with('error', 'Untuk mengakses artikel premium, Anda harus berlangganan terlebih dahulu.');
             }
         }
 
-        // Ambil 5 artikel lain dari author yang sama, tidak termasuk artikel ini
         $moreFromAuthor = \App\Models\Article::with('category')
             ->where('author_id', $article->author_id)
             ->where('id', '!=', $article->id)
@@ -143,7 +140,6 @@ class ArticleController extends Controller
     {
         $ids = explode(',', $request->input('selected_ids'));
 
-        // Hapus thumbnail dari storage jika ada
         $articles = \App\Models\Article::whereIn('id', $ids)->get();
         foreach ($articles as $article) {
             if ($article->thumbnail) {
@@ -151,7 +147,6 @@ class ArticleController extends Controller
             }
         }
 
-        // Hapus dari database
         \App\Models\Article::whereIn('id', $ids)->delete();
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel yang dipilih berhasil dihapus.');
@@ -165,10 +160,8 @@ class ArticleController extends Controller
 
         $user = auth()->user();
 
-        // Hapus dislike jika sebelumnya sudah dislike
         $article->dislikedByUsers()->detach($user->id);
 
-        // Toggle like: kalau sudah like, hapus; kalau belum, tambah
         if ($article->likedByUsers()->where('user_id', $user->id)->exists()) {
             $article->likedByUsers()->detach($user->id);
         } else {
@@ -186,10 +179,8 @@ class ArticleController extends Controller
 
         $user = auth()->user();
 
-        // Hapus like jika sebelumnya sudah like
         $article->likedByUsers()->detach($user->id);
 
-        // Toggle dislike: kalau sudah dislike, hapus; kalau belum, tambah
         if ($article->dislikedByUsers()->where('user_id', $user->id)->exists()) {
             $article->dislikedByUsers()->detach($user->id);
         } else {
@@ -204,10 +195,8 @@ class ArticleController extends Controller
         $user = auth()->user();
 
         if ($user->bookmarkedArticles->contains($article->id)) {
-            // Sudah disimpan, hapus dari bookmark
             $user->bookmarkedArticles()->detach($article->id);
         } else {
-            // Belum disimpan, tambahkan
             $user->bookmarkedArticles()->attach($article->id);
         }
 

@@ -7,18 +7,15 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!-- Icons -->
     <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
     />
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     
@@ -26,7 +23,6 @@
 <body class="font-sans antialiased bg-white">
     <div class="min-h-screen bg-white">
         
-        <!-- Page Heading -->
         @hasSection('header')
             <header class="bg-white">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -35,7 +31,6 @@
             </header>
         @endif
 
-        <!-- Page Content -->
         <main>
             <div class="container mx-auto max-w-7xl px-4">
                 @yield('content')

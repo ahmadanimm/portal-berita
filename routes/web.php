@@ -10,7 +10,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CategoryController; 
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthorController as PublicAuthorController;
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Controller admin pakai alias
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; 
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AuthorController;
@@ -19,22 +19,16 @@ use App\Http\Middleware\IsAdmin;
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Dashboard user biasa
+
     Route::get('/dashboard', function () {
         return redirect('/');
     })->name('dashboard');
 
-
     Route::get('/profil', [ProfileController::class, 'index'])->name('profile');
-
-
-
-    // Profile user
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
 
-    // Subscribe / unsubscribe
     Route::get('/berlangganan', [SubscriptionController::class, 'index'])->name('subscription.index');
     Route::post('/subscribe/{type}', [SubscriptionController::class, 'subscribe'])->name('subscription.subscribe');
     Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('subscription.unsubscribe');
@@ -42,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-// Group khusus route admin, dengan middleware 'auth', 'verified', dan 'admin'
+
 Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('articles', ArticleController::class);
@@ -55,7 +49,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('
     Route::get('stats', [StatsController::class, 'index'])->name('stats');
 });
 
-// Route publik
+
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');

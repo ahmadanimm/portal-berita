@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
-            <!-- Pesan Sukses -->
+           
             @if(session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
                     {{ session('success') }}
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <!-- Status Langganan -->
+            
             @auth
                 @php
                     $user = auth()->user();
@@ -43,7 +43,7 @@
                     </p>
                 @endif
 
-                <!-- Batalkan Langganan -->
+                
                  @if(auth()->user()->is_subscribed && auth()->user()->subscribed_until > now())
                     <form method="POST" action="{{ route('unsubscribe') }}" onsubmit="return confirm('Yakin ingin membatalkan langganan?');">
                         @csrf
@@ -53,7 +53,7 @@
                     </form>
                 @endif
 
-                <!-- Riwayat Langganan -->
+                
                 @if($user->subscriptions->count())
                     <div class="bg-white p-4 mt-4 rounded shadow">
                         <h3 class="text-lg font-semibold mb-2">Riwayat Langganan</h3>

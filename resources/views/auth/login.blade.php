@@ -11,14 +11,12 @@
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="w-full max-w-md">
 
-            <!-- Tombol Kembali -->
             <div class="bg-white px-6 py-4 rounded-t-md shadow mb-4">
                 <a href="{{ url('/') }}" class="text-sm font-semibold text-black flex items-center">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda
                 </a>
             </div>
 
-            <!-- Form Login -->
             <div class="bg-white border px-8 py-10 rounded-b-md shadow">
 
                 <div class="text-center mb-6">
@@ -78,7 +76,6 @@
         </div>
     </div>
 
-    <!-- Toggle Password Script -->
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');

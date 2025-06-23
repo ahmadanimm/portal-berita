@@ -10,10 +10,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Hitung user biasa (tidak termasuk admin)
         $userCount = User::where('role', '!=', 'admin')->count();
 
-        // Hitung pelanggan premium (dengan subscription aktif, bukan admin)
         $premiumUsers = User::whereHas('subscriptions', function ($query) {
             $query->where('ends_at', '>', now());
         })->where('role', '!=', 'admin')->count();
@@ -21,7 +19,6 @@ class DashboardController extends Controller
         $totalUsers = \App\Models\User::count();
         $regularUsers = $totalUsers - $premiumUsers;
 
-        // Ambil kategori dan hitung jumlah artikelnya
         $categories = Category::withCount('articles')->get();
         $categoryLabels = $categories->pluck('name');
         $categoryCounts = $categories->pluck('articles_count');

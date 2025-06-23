@@ -69,7 +69,6 @@
   
 </section>
 
-{{-- MODAL UNTUK PREMIUM --}}
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>

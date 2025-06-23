@@ -10,9 +10,7 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $query = \App\Models\Category::query();
@@ -26,19 +24,11 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.categories.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -60,13 +50,9 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        
     }
 
     public function edit($id)
@@ -86,7 +72,6 @@ class CategoryController extends Controller
 
         $data = ['name' => $request->name];
 
-        // Hapus ikon lama & simpan baru jika ada
         if ($request->hasFile('icon')) {
             if ($category->icon) {
                 \Storage::disk('public')->delete($category->icon);

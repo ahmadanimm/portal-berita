@@ -11,7 +11,7 @@
 @section('content')
 <div class="bg-white p-4 rounded-lg shadow-md">
     <div class="flex justify-between items-center mb-4">
-        <!-- Selected Count & Delete Button -->
+
         <form id="bulk-delete-form" method="POST" action="{{ route('admin.articles.destroy', ['article' => 0]) }}" onsubmit="return confirm('Yakin ingin menghapus artikel terpilih?');">
             @csrf
             @method('DELETE')
@@ -22,7 +22,6 @@
             </button>
         </form>
 
-        <!-- Search Bar -->
         <form method="GET" action="{{ route('admin.articles.index') }}" class="relative w-64">
             <input
                 type="text"

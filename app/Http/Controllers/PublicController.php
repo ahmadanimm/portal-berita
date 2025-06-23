@@ -15,15 +15,12 @@ class PublicController extends Controller
     {
 	$categories = Category::all();
 
-        // 3 artikel untuk berita terkini
         $latestArticles = Article::latest()->take(3)->with('category')->get();
 
-        // 1 artikel terbaru per kategori (untuk bagian atas)
         $latestPerCategory = Category::with(['articles' => function ($query) {
             $query->latest()->limit(1);
         }])->get();
 
-        // 4 artikel terbaru per kategori (untuk bagian bawah)
         $categoriesWithArticles = Category::with(['articles' => function ($query) {
             $query->latest()->limit(4);
         }])->get();
@@ -80,7 +77,6 @@ class PublicController extends Controller
     {
         $category = Category::where('slug', $slug)->firstOrFail();
 
-        // Dummy articles sementara
         $articles = [
             [
                 'title' => 'Judul Berita Dummy 1',

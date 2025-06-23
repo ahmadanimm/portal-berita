@@ -35,7 +35,6 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        // validasi dan update user...
         $request->validate([
             'name' => 'required|string|max:255',
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -57,7 +56,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        // Redirect ke halaman profil dengan pesan sukses
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
     }
 

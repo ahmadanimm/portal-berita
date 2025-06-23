@@ -88,7 +88,6 @@
             </flux:dropdown>
         </flux:header>
 
-        <!-- Mobile Menu -->
         <flux:sidebar stashable sticky class="lg:hidden border-e border-zinc-200 bg-zinc-50">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 

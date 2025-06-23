@@ -10,7 +10,7 @@
 
 <body class="bg-white text-gray-900 font-sans">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+
         <aside class="w-64 bg-blue-900 text-white p-6 flex flex-col justify-between">
             <div>
                 <div class="mb-6 ml-4">
@@ -41,7 +41,6 @@
                 </nav>
             </div>
 
-            <!-- Logout -->
             <form method="POST" action="{{ route('logout') }}" class="mt-6">
                 @csrf
                 <button type="submit"
@@ -51,7 +50,6 @@
             </form>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 p-6 bg-gray-50 text-gray-900 mt-4">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">

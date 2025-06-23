@@ -6,7 +6,6 @@
 
 <div class="max-w-7xl ml-12 mr-12 mt-10 mx-auto px-4 py-10">
 
-  {{-- Notifikasi --}}
   @if(session('success'))
     <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
       {{ session('success') }}
@@ -19,9 +18,8 @@
     </div>
   @endif
   
-  <!-- Profile section -->
   <div class="flex flex-col md:flex-row items-center md:items-start md:gap-6 mb-10">
-  <!-- Avatar -->
+
     <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-5xl">
     @if (Auth::user()->profile_photo)
         <img src="{{ asset('storage/profile_photos/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="w-full h-full object-cover">
@@ -30,7 +28,6 @@
     @endif
     </div>
 
-    <!-- User info -->
     <div class="flex-1 text-center md:text-left mt-4 md:mt-0">
       <h1 class="text-2xl md:text-3xl font-bold flex items-center justify-center md:justify-start gap-2">
         {{ Auth::user()->name }}
@@ -73,7 +70,6 @@
         <i class="bi bi-hand-thumbs-up-fill"></i> Konten yang disukai
       </button>
 
-      {{-- TAB BARU: Riwayat Berlangganan --}}
       <button
         @click="tab = 'subscriptions'"
         :class="tab === 'subscriptions' ? 'border-blue-600 text-blue-600 border-2' : 'border text-gray-600 hover:bg-gray-100'"
@@ -149,7 +145,6 @@
       @endforelse
     </div>
 
-    {{-- KONTEN BARU: Riwayat Berlangganan --}}
     <div x-show="tab === 'subscriptions'" class="bg-white rounded-lg p-6 shadow-md">
         <h4 class="text-lg font-semibold text-gray-800 mb-4">Riwayat Langganan Saya</h4>
         @forelse ($user->subscriptions as $subscription)

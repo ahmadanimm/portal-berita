@@ -11,21 +11,18 @@
 <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow text-black space-y-4">
     @csrf
 
-    <!-- Nama -->
     <div>
         <label class="block font-semibold mb-1">Nama Kategori</label>
         <input type="text" name="name" value="{{ old('name') }}"
                required class="w-full border border-gray-300 rounded px-3 py-2">
     </div>
 
-    <!-- Ikon -->
     <div>
         <label class="block font-semibold mb-1">Upload Ikon (Gambar)</label>
         <input type="file" name="icon" accept="image/*"
                class="w-full border border-gray-300 rounded px-3 py-2">
     </div>
 
-    <!-- Tombol -->
     <div class="mt-6">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Simpan

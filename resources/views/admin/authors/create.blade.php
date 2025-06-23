@@ -11,21 +11,18 @@
 <form action="{{ route('admin.authors.store') }}" method="POST" enctype="multipart/form-data" class="bg-white text-black p-6 rounded shadow space-y-4">
     @csrf
 
-    <!-- Nama -->
     <div>
         <label for="name" class="block mb-1 font-semibold">Nama</label>
         <input type="text" name="name" id="name" required
             class="w-full border border-gray-300 rounded px-3 py-2" />
     </div>
 
-    <!-- Avatar -->
     <div>
         <label for="avatar" class="block mb-1 font-semibold">Avatar</label>
         <input type="file" name="avatar" id="avatar"
             class="w-full border border-gray-300 rounded px-3 py-2" />
     </div>
 
-    <!-- Tombol Aksi -->
     <div>
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Simpan

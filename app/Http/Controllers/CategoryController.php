@@ -12,7 +12,6 @@ class CategoryController extends Controller
         $categories = Category::all(); 
         $category = Category::where('slug', $slug)->firstOrFail();
 
-        // Ambil semua artikel dari kategori ini (tanpa filter premium)
         $articles = Article::where('category_id', $category->id)
                         ->latest()
                         ->paginate(12);

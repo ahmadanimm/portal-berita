@@ -4,19 +4,15 @@
 @section('content')
 @include('partials.navbar')
 
-{{-- Hero Section (konten artikel lainnya tetap di dalam div aslinya) --}}
 <div class="bg-white pt-6">
-  {{-- Tanggal dan Kategori --}}
   <div class="text-center text-sm text-gray-500">
     {{ $article->created_at->format('M d, Y') }} · {{ $article->category->name }}
   </div>
 
-  {{-- Judul --}}
   <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mt-2">
     {{ $article->title }}
   </h1>
 
-{{-- Author --}}
 <div class="flex justify-center items-center mt-3 space-x-3">
   <img src="{{ asset('storage/' . $article->author->avatar) }}" alt="{{ $article->author->name }}" class="w-8 h-8 rounded-full object-cover">
   <div>
@@ -26,10 +22,9 @@
     </div>
   </div>
   @php
-    // Ganti $article->user menjadi $article->author
-    $author = $article->author; // <<< PERHATIKAN PERUBAHAN INI
+    
+    $author = $article->author; 
 
-    // Lakukan pemeriksaan apakah author memang ada, untuk menghindari error jika author_id null atau tidak valid
     if ($author) {
         $authorAverageRating = $author->average_rating ?? 0.0;
         $authorRatingsCount = $author->ratings_count ?? 0;
@@ -38,7 +33,7 @@
         $halfStar = ($authorAverageRating - $fullStars) >= 0.5;
         $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
     } else {
-        // Atur nilai default jika author tidak ditemukan
+        
         $authorAverageRating = 0.0;
         $authorRatingsCount = 0;
         $fullStars = 0;
@@ -68,8 +63,6 @@
   <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
 </div>
 
-
-{{-- Konten --}}
 @php
     $body = strip_tags($article->body);
 @endphp
@@ -77,7 +70,7 @@
 <div class="container mt-6 mx-auto max-w-7xl">
     <div class="flex flex-col lg:flex-row gap-3">
 
-        {{-- Konten utama --}}
+        
         <main class="w-full lg:w-7/12 overflow-hidden">
             <div class="px-6 pt-6 pb-6">
                 <p class="text-gray-700 text-base md:text-lg leading-loose tracking-wider text-justify">
@@ -86,7 +79,6 @@
             </div>
         </main>
 
-        {{-- Sidebar: Artikel lain dari penulis --}}
         <aside class="w-full lg:w-2/5">
             <div class="p-6">
                 <h3 class="font-semibold mb-6 text-2xl">More From Author</h3>
@@ -136,7 +128,7 @@
             </div>
         </aside>
 
-        {{-- MODAL UNTUK PREMIUM --}}
+        
         <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
             <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>
@@ -149,7 +141,7 @@
         </div>
         </div>
 
-        {{-- SCRIPT UNTUK MODAL --}}
+        
         <script>
         function showPremiumModal() {
             document.getElementById('premiumModal').classList.remove('hidden');
@@ -163,8 +155,6 @@
     </div>
 </div>
 
-
-{{-- Section for Likes, Dislikes, Saves --}}
 <div class="mt-8 px-6 pb-8">
     <div class="flex items-center justify-start gap-6 bg-blue-700 text-white rounded-lg py-3 px-6 w-fit shadow-md">
 
@@ -187,7 +177,7 @@
             </button>
         </div>
 
-        {{-- MODAL UNTUK LIKE --}}
+        
         <div id="likeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
             <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
@@ -223,7 +213,7 @@
             <span>{{ $article->dislikedByUsers()->count() }}</span>
         </button>
 
-        {{-- MODAL DISLIKE --}}
+        
         <div id="dislikeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
             <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
@@ -264,7 +254,7 @@
             <span>{{ $article->bookmarkedByUsers()->count() }}</span>
         </button>
 
-        {{-- MODAL BOOKMARK --}}
+        
         <div id="bookmarkModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
             <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
@@ -303,7 +293,7 @@
             }
         @endphp
 
-        {{-- Rating --}}
+        
         <div class="flex items-center gap-2 text-sm text-gray-100">
             <span>Suka dengan artikel? Beri ulasan untuk penulis:</span>
 
@@ -320,14 +310,12 @@
                             </button>
                         </form>
                     @else
-                        {{-- Jika belum login, tampilkan bintang abu-abu dan buka modal --}}
                         <button type="button" onclick="openRatingModal()" class="text-xl text-gray-300 hover:scale-110">★</button>
                     @endif
                 @endfor
             </div>
         </div>
 
-        {{-- Modal Login untuk Rating --}}
         <div id="ratingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
                 <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
@@ -349,7 +337,6 @@
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
                     <h2 class="text-xl font-semibold mb-2 text-gray-800">{{ session('success') }}</h2>
 
-                    {{-- Bintang sesuai rating yang baru saja diberikan (dari session('rated_value')) --}}
                     <div class="flex justify-center gap-1 text-yellow-400 text-2xl mb-4">
                         @for ($i = 1; $i <= (session('rated_value') ?? 0); $i++) {{-- Pastikan ada fallback 0 jika session kosong --}}
                             ★
@@ -375,13 +362,12 @@
         </script>
     </div>
 
-    {{-- Comments Section Container --}}
     <div class="mt-8 bg-gray-100 rounded-lg p-6 shadow-md">
         <h3 class="font-semibold text-2xl text-gray-800 mb-6 flex items-center gap-2">
             Komentar
             <span class="text-sm text-gray-500">({{ $article->comments->count() }})</span>
         </h3>
-        {{-- Form Komentar --}}
+
         @auth
             <form action="{{ route('comments.store', $article->id) }}" method="POST" class="flex items-center gap-4 mb-8">
                 @csrf
@@ -402,7 +388,6 @@
             </div>
         @endauth
 
-        {{-- Comment List --}}
         <div class="space-y-6">
             @forelse ($article->comments as $comment)
                 <div class="flex items-start gap-4">
@@ -418,8 +403,8 @@
                     <div>
                         <h1 class="text-sm font-semibold text-gray-800">
                             {{ $comment->user->name }}
-                            {{-- INI BAGIAN YANG PERLU DIUBAH --}}
-                            @if ($comment->user->is_subscribed) {{-- Periksa properti is_subscribed dari pengguna KOMENTAR --}}
+
+                            @if ($comment->user->is_subscribed) 
                                 <i class="bi bi-patch-check-fill text-blue-600 text-sm"></i>
                             @endif
                         </h1>

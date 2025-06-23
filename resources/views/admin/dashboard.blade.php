@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <!-- Chart Pelanggan -->
+
     <div class="bg-white rounded shadow p-6">
         <div class="flex items-center mb-4">
             <div class="bg-pink-500 text-white rounded-lg p-2 mr-3">
@@ -17,7 +17,6 @@
         </div>
     </div>
 
-    <!-- Chart Kategori Artikel -->
     <div class="bg-white rounded shadow p-6">
         <div class="flex items-center mb-4">
             <div class="bg-blue-500 text-white rounded-lg p-2 mr-3">
@@ -33,17 +32,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Fungsi untuk menghasilkan warna berbeda berdasarkan jumlah data
+    
     function generateColors(length) {
         const colors = [];
         for (let i = 0; i < length; i++) {
-            const hue = Math.floor(360 * i / length); // sebaran warna merata
+            const hue = Math.floor(360 * i / length); 
             colors.push(`hsl(${hue}, 70%, 60%)`);
         }
         return colors;
     }
 
-    // User Chart
     const userChartCtx = document.getElementById('userChart').getContext('2d');
     const userChart = new Chart(userChartCtx, {
         type: 'doughnut',
@@ -69,7 +67,6 @@
         }
     });
 
-    // Category Chart dengan warna dinamis
     const categoryLabels = {!! json_encode($categoryLabels) !!};
     const categoryData = {!! json_encode($categoryCounts) !!};
     const categoryColors = generateColors(categoryLabels.length);

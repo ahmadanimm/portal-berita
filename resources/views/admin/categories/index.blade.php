@@ -11,7 +11,7 @@
 @section('content')
 <div class="bg-white p-6 rounded-lg shadow">
     <div class="flex justify-between items-center mb-4">
-        <!-- Bulk Delete -->
+
         <form id="bulk-delete-form" method="POST" action="{{ route('admin.categories.destroy', ['category' => 0]) }}" onsubmit="return confirm('Yakin ingin menghapus kategori terpilih?');">
             @csrf
             @method('DELETE')
@@ -22,7 +22,6 @@
             </button>
         </form>
 
-        <!-- Search -->
         <form method="GET" action="{{ route('admin.categories.index') }}" class="relative w-64">
             <input
                 type="text"
