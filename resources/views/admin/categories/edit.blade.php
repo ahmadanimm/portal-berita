@@ -21,22 +21,44 @@
 
     <div>
         <label class="block font-semibold mb-1">Ganti Ikon (Opsional)</label>
-        <input type="file" name="icon" accept="image/*"
+        <input type="file" name="icon" id="iconInput" accept="image/*"
                class="w-full border border-gray-300 rounded px-3 py-2">
 
-        @if ($category->icon)
-            <p class="text-sm text-gray-600 mt-1">Ikon saat ini:</p>
-            <img src="{{ asset('storage/' . $category->icon) }}" alt="ikon" class="w-12 h-12 object-cover mt-1">
-        @endif
+        <p class="block font-semibold mb-2 mt-2">Ikon saat ini:</p>
+        <img id="iconPreview"
+             src="{{ $category->icon ? asset('storage/' . $category->icon) : 'https://via.placeholder.com/48' }}"
+             alt="ikon"
+             class="w-16 h-16 object-cover mt-1 rounded border">
     </div>
 
     <div class="mt-6">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Simpan
         </button>
-        <a href="{{ route('admin.categories.index') }}" class="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+        <a href="{{ route('admin.categories.index') }}"
+           class="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
             Batal
         </a>
     </div>
 </form>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const iconInput = document.getElementById('iconInput');
+    const iconPreview = document.getElementById('iconPreview');
+
+    iconInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                iconPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+@endpush

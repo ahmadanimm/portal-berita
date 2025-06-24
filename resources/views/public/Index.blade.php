@@ -12,52 +12,57 @@
     }
 }" class="relative h-[400px] w-full mb-12 overflow-hidden">
 
+    <div class="absolute bottom-6 inset-x-0 z-10 mr-4"> 
+      <div class="relative max-w-7xl mx-auto px-4 flex justify-end gap-3">
+        <button
+          @click.stop="prevSlide()"
+          class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
+        >
+          <i class="bi bi-chevron-left text-white text-xl"></i>
+        </button>
+        <button
+          @click.stop="nextSlide()"
+          class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
+        >
+          <i class="bi bi-chevron-right text-white text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    {{-- Slide section --}}
     <div
-        class="absolute inset-0 flex transition-transform duration-700 ease-in-out"
-        :style="`transform: translateX(-${active * 100}%)`"
+      class="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+      :style="`transform: translateX(-${active * 100}%)`"
     >
-        @foreach ($latestPerCategory as $index => $category)
-            @php $article = $category->articles->sortByDesc('created_at')->first(); @endphp
-            @if ($article)
-                <div
-                    class="flex-shrink-0 w-full h-full relative"
-                    style="background-image: url('{{ asset('storage/' . $article->thumbnail) }}'); background-size: cover; background-position: center;"
-                >
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+      @foreach ($latestPerCategory as $index => $category)
+        @php $article = $category->articles->sortByDesc('created_at')->first(); @endphp
+        @if ($article)
+          <div
+            class="flex-shrink-0 w-full h-full relative z-20" {{-- Z-20 agar bisa diklik --}}
+            style="background-image: url('{{ asset('storage/' . $article->thumbnail) }}'); background-size: cover; background-position: center;"
+          >
+            <a href="{{ route('article.show', $article->slug) }}" class="absolute inset-0 z-30"></a>
 
-                    <div class="relative max-w-7xl mx-auto px-8 py-12 text-white flex flex-col justify-end h-full">
-                        <span class="inline-block bg-blue-700 px-3 py-1 rounded text-xs font-semibold mb-3 max-w-max">
-                            {{ $category->name }}
-                        </span>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
 
-                        <time class="text-sm mb-3 block">
-                            {{ $article->created_at->format('d/m/Y, H:i') }} WIB
-                        </time>
+            <div class="relative max-w-7xl mx-auto px-8 py-12 text-white flex flex-col justify-end h-full z-20">
+              <span class="inline-block bg-blue-700 px-3 py-1 rounded text-xs font-semibold mb-3 max-w-max">
+                {{ $category->name }}
+              </span>
 
-                        <span class="block bg-blue-600 w-[20px] h-[3px] mb-4 rounded"></span>
+              <time class="text-sm mb-3 block">
+                {{ $article->created_at->format('d/m/Y, H:i') }} WIB
+              </time>
 
-                        <h1 class="text-2xl font-bold leading-tight max-w-xl">
-                            {{ $article->title }}
-                        </h1>
+              <span class="block bg-blue-600 w-[20px] h-[3px] mb-4 rounded"></span>
 
-                        <div class="absolute bottom-6 right-8 flex gap-3">
-                            <button
-                                @click.stop="prevSlide()" {{-- Tambahkan .stop untuk mencegah event bubble --}}
-                                class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
-                            >
-                                <i class="bi bi-chevron-left text-white text-xl"></i>
-                            </button>
-                            <button
-                                @click.stop="nextSlide()" {{-- Tambahkan .stop untuk mencegah event bubble --}}
-                                class="bg-white bg-opacity-30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-50 transition"
-                            >
-                                <i class="bi bi-chevron-right text-white text-xl"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @endforeach
+              <h1 class="text-2xl font-bold leading-tight max-w-xl">
+                {{ $article->title }}
+              </h1>
+            </div>
+          </div>
+        @endif
+      @endforeach
     </div>
 
 </section>

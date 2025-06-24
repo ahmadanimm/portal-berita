@@ -368,25 +368,33 @@
             <span class="text-sm text-gray-500">({{ $article->comments->count() }})</span>
         </h3>
 
-        @auth
-            <form action="{{ route('comments.store', $article->id) }}" method="POST" class="flex items-center gap-4 mb-8">
-                @csrf
-                <input 
-                    type="text" 
-                    name="content"
-                    placeholder="Tulis Komentar"
-                    class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
-                    required
-                >
-                <button type="submit" class="bg-white text-gray-600 p-3 rounded-full shadow-sm hover:shadow-md transition-shadow flex-shrink-0">
-                    <i class="bi bi-send text-xl rotate-[45deg] inline-block"></i>
-                </button>
-            </form>
-        @else
-            <div class="mb-8">
-                <p class="text-gray-600 text-sm">Silakan <a href="{{ route('login') }}" class="text-blue-600 hover:underline">login</a> untuk menulis komentar.</p>
-            </div>
-        @endauth
+        <form 
+            @auth
+                action="{{ route('comments.store', $article->id) }}" 
+                method="POST"
+            @else
+                action="javascript:void(0);" {{-- supaya tidak refresh --}}
+            @endauth
+            class="flex items-center gap-4 mb-8" 
+            id="commentForm"
+        >
+            @csrf
+            <input 
+                type="text" 
+                name="content"
+                id="commentInput"
+                placeholder="Tulis Komentar"
+                class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                required
+            >
+            <button 
+                type="submit" 
+                class="bg-white text-gray-600 p-3 rounded-full shadow-sm hover:shadow-md transition-shadow flex-shrink-0"
+                id="commentSubmit"
+            >
+                <i class="bi bi-send text-xl rotate-[45deg] inline-block"></i>
+            </button>
+        </form>
 
         <div class="space-y-6">
             @forelse ($article->comments as $comment)
@@ -403,7 +411,6 @@
                     <div>
                         <h1 class="text-sm font-semibold text-gray-800">
                             {{ $comment->user->name }}
-
                             @if ($comment->user->is_subscribed) 
                                 <i class="bi bi-patch-check-fill text-blue-600 text-sm"></i>
                             @endif
@@ -417,6 +424,42 @@
             @endforelse
         </div>
     </div>
+
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+            <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
+            <p class="text-sm text-gray-600 mb-4">Silakan login terlebih dahulu untuk mengirim komentar.</p>
+            <div class="flex justify-center gap-3">
+                <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
+            </div>
+            <button onclick="closeLoginModal()" class="text-sm text-gray-500 mt-4 hover:underline">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+    function showLoginModal() {
+        document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+        document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const commentForm = document.getElementById('commentForm');
+        const commentInput = document.getElementById('commentInput');
+        const isGuest = {{ auth()->check() ? 'false' : 'true' }};
+
+        if (isGuest) {
+            commentForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (commentInput.value.trim() !== '') {
+                    showLoginModal();
+                }
+            });
+        }
+    });
+    </script>
 
 </div>
 

@@ -22,30 +22,51 @@
 
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf
+
                 <div>
                     <label for="name" class="text-sm font-semibold">Name</label>
-                    <input id="name" type="text" name="name" required autofocus class="w-full px-4 py-2 bg-gray-200 rounded">
+                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                        class="w-full px-4 py-2 bg-gray-200 rounded @error('name') border-red-500 @enderror">
+                    @error('name')
+                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="email" class="text-sm font-semibold">Email</label>
-                    <input id="email" type="email" name="email" required class="w-full px-4 py-2 bg-gray-200 rounded">
+                    <input 
+                        id="email" 
+                        type="email" 
+                        name="email" 
+                        value="{{ old('email') }}" 
+                        required
+                        placeholder="contoh: user@gmail.com"
+                        class="w-full px-4 py-2 bg-gray-200 rounded @error('email') border-red-500 @enderror"
+                    >
+                    @error('email')
+                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div x-data="{ show: false }">
                     <label for="password" class="text-sm font-semibold">Password</label>
                     <div class="relative">
-                        <input :type="show ? 'text' : 'password'" id="password" name="password" required class="w-full px-4 py-2 bg-gray-200 rounded">
+                        <input :type="show ? 'text' : 'password'" id="password" name="password" required
+                            class="w-full px-4 py-2 bg-gray-200 rounded @error('password') border-red-500 @enderror">
                         <span @click="show = !show" class="absolute right-3 top-2.5 cursor-pointer">
                             <i :class="show ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                         </span>
                     </div>
+                    @error('password')
+                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div x-data="{ show: false }">
                     <label for="password_confirmation" class="text-sm font-semibold">Konfirmasi Password</label>
                     <div class="relative">
-                        <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required class="w-full px-4 py-2 bg-gray-200 rounded">
+                        <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required
+                            class="w-full px-4 py-2 bg-gray-200 rounded">
                         <span @click="show = !show" class="absolute right-3 top-2.5 cursor-pointer">
                             <i :class="show ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                         </span>
@@ -60,6 +81,7 @@
                     Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
                 </p>
             </form>
+
         </div>
     </div>
 </body>

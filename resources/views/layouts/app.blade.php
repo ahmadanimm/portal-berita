@@ -38,5 +38,6 @@
         </main>
     </div>
     <script defer src="//unpkg.com/alpinejs" type="text/javascript"></script>
+    @stack('scripts')
 </body>
 </html>

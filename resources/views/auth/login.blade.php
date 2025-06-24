@@ -37,10 +37,11 @@
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="email" required autofocus
                             value="{{ old('email') }}"
+                            placeholder="contoh: user@gmail.com"
                             class="w-full mt-1 px-4 py-2 bg-gray-200 rounded focus:outline-none">
 
                         @error('email')
-                            <p class="text-sm text-red-600 mt-1">Harap masukkan email yang valid.</p>
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 

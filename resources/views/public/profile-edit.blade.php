@@ -7,15 +7,17 @@
 
   <div class="flex flex-col md:flex-row items-start md:gap-6 mb-10">
 
+    
     <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-5xl">
       @if (Auth::user()->profile_photo)
-        <img src="{{ asset('storage/profile_photos/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="w-full h-full object-cover">
+        <img id="profilePhotoPreview" src="{{ asset('storage/profile_photos/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="w-full h-full object-cover">
       @else
-        <i class="bi bi-person-fill text-gray-500"></i>
+        <img id="profilePhotoPreview" src="{{ asset('assets/images/default-avatar.png') }}" alt="Foto Default" class="w-full h-full object-cover hidden">
+        <i class="bi bi-person-fill text-gray-500" id="defaultIcon"></i>
       @endif
     </div>
 
-
+    
     <div class="flex-1 mt-6 md:mt-0">
       <h2 class="text-2xl font-bold mb-6">Edit Profil</h2>
 
@@ -25,13 +27,13 @@
 
       <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
-
+        
         <div>
           <label class="block font-medium mb-1 text-sm">Foto Profil</label>
-          <input type="file" name="profile_photo" accept="image/*"
+          <input type="file" name="profile_photo" accept="image/*" id="profilePhotoInput"
             class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-
+        
         <div>
           <label class="block font-medium mb-1 text-sm">Nama</label>
           <input type="text" name="name" value="{{ Auth::user()->name }}"
@@ -54,18 +56,39 @@
             Batal
           </a>
         </div>
-        </form>
+      </form>
 
-        <form action="{{ route('profile.delete') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun secara permanen?')"
-        class="mt-24">
+      <form action="{{ route('profile.delete') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun secara permanen?')" class="mt-24">
         @csrf
         <button type="submit"
             class="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 text-sm">
             Hapus Akun
         </button>
-        </form>
-
+      </form>
     </div>
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('profilePhotoInput');
+    const preview = document.getElementById('profilePhotoPreview');
+    const defaultIcon = document.getElementById('defaultIcon');
+
+    input.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          preview.src = event.target.result;
+          preview.classList.remove('hidden');
+          if (defaultIcon) defaultIcon.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+</script>
+@endpush
