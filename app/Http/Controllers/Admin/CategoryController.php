@@ -19,7 +19,7 @@ class CategoryController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $categories = $query->latest()->paginate(10);
+        $categories = $query->orderBy('id', 'desc')->paginate(10);
 
         return view('admin.categories.index', compact('categories'));
     }

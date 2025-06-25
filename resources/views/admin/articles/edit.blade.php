@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @section('page-title')
-    <a href="{{ route('admin.articles.index') }}" class="text-gray-500 hover:underline">Article News</a>
+    <a href="{{ route('admin.articles.index') }}" class="text-gray-500 hover:underline">Manajemen Berita</a>
     <span class="text-gray-400"> / </span>
-    <span class="text-black">Edit Artikel</span>
+    <span class="text-black">Edit Berita</span>
 @endsection
 
 @section('content')
@@ -46,7 +46,7 @@
     </div>
 
     <div>
-        <label class="block mb-1 font-semibold text-sm">Ganti Thumbnail</label>
+        <label class="block mb-1 font-semibold text-sm">Ganti Thumbnail (Max. 2 MB)</label>
         <input type="file" name="thumbnail" id="thumbnailInput"
                class="w-full border border-gray-300 rounded px-3 py-2 text-sm" accept="image/*">
     </div>

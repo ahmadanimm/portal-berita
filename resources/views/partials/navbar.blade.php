@@ -62,7 +62,7 @@
                 clearBtn.classList.add('hidden');
                 window.location.href = '/';
             }
-        }, 500); // delay pencarian 500ms setelah berhenti mengetik
+        }, 500); 
 
         input.addEventListener('input', function () {
             if (input.value.trim() === '') {

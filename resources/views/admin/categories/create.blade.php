@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title')
-    <a href="{{ route('admin.categories.index') }}" class="text-gray-500 hover:underline">Categories</a>
+    <a href="{{ route('admin.categories.index') }}" class="text-gray-500 hover:underline">Manajemen Kategori</a>
     <span class="text-gray-400"> / </span>
     <span class="text-black">Tambah Kategori</span>
 @endsection
@@ -18,7 +18,7 @@
     </div>
 
     <div>
-        <label class="block font-semibold mb-1">Upload Ikon (Gambar)</label>
+        <label class="block font-semibold mb-1">Upload Ikon / Gambar (Max. 2 MB)</label>
         <input type="file" name="icon" accept="image/*"
                class="w-full border border-gray-300 rounded px-3 py-2">
     </div>

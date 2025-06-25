@@ -28,15 +28,15 @@
                     </a>
                     <a href="{{ route('admin.articles.index') }}"
                        class="flex items-center px-3 py-2 rounded hover:bg-blue-800 transition {{ request()->routeIs('admin.articles.*') ? 'bg-blue-800 font-semibold' : '' }}">
-                        <i class="fas fa-newspaper mr-2 text-blue-300"></i> Article News
+                        <i class="fas fa-newspaper mr-2 text-blue-300"></i> Manajemen Berita
                     </a>
                     <a href="{{ route('admin.authors.index') }}"
                        class="flex items-center px-3 py-2 rounded hover:bg-blue-800 transition {{ request()->routeIs('admin.authors.*') ? 'bg-blue-800 font-semibold' : '' }}">
-                        <i class="fas fa-user-pen mr-2 text-blue-300"></i> Authors
+                        <i class="fas fa-user-pen mr-2 text-blue-300"></i> Manajemen Penulis
                     </a>
                     <a href="{{ route('admin.categories.index') }}"
                        class="flex items-center px-3 py-2 rounded hover:bg-blue-800 transition {{ request()->routeIs('admin.categories.*') ? 'bg-blue-800 font-semibold' : '' }}">
-                        <i class="fas fa-layer-group mr-2 text-blue-300"></i> Categories
+                        <i class="fas fa-layer-group mr-2 text-blue-300"></i> Manajemen Kategori
                     </a>
                 </nav>
             </div>
@@ -53,7 +53,7 @@
         <main class="flex-1 p-6 bg-gray-50 text-gray-900 mt-4">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">
-                    {!! trim($__env->yieldContent('page-title', 'Article News')) !!}
+                    {!! trim($__env->yieldContent('page-title', 'Manajemen Berita')) !!}
                 </h1>
                 @hasSection('page-action')
                     <div>

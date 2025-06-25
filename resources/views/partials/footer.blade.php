@@ -21,7 +21,7 @@
         </div>
 
         <div class="border-gray-300 pt-3 text-sm text-gray-500">
-            &copy; 2025 Ruang Kabar. Designed by AhmadAnim.
+            &copy; 2025 Ruang Kabar.
         </div>
     </div>
 </footer>

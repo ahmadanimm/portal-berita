@@ -2,8 +2,8 @@
 
 @section('hero')
 <h2 class="text-3xl font-bold mt-10 mb-10 text-center">
-  Explore Our <br>
-  <span class="text-black">{{ $category->name }} News</span>
+  Jelajahi Berita <br>
+  <span class="text-black">{{ $category->name }} Kami</span>
 </h2>
 @endsection
 

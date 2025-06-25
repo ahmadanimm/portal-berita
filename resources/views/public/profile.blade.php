@@ -38,7 +38,7 @@
       <p class="text-sm text-gray-600">{{ Auth::user()->email }}</p>
 
       <div class="mt-4 flex justify-center md:justify-start gap-3">
-        <a href="{{ route('profile.edit') }}" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700">Edit profile</a>
+        <a href="{{ route('profile.edit') }}" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700">Edit profil</a>
         @if (Auth::user()->is_subscribed)
           <form method="POST" action="{{ route('subscription.unsubscribe') }}">
             @csrf

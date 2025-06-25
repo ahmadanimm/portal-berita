@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Authors')
+@section('page-title', 'Manajemen Penulis')
 
 @section('page-action')
     <a href="{{ route('admin.authors.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
-        + New Author
+        + Tambah Penulis
     </a>
 @endsection
 
@@ -18,7 +18,7 @@
             <input type="hidden" name="selected_ids" id="selected-ids">
             <div id="selected-count" class="hidden text-gray-700 mb-1"></div>
             <button type="submit" id="delete-selected" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm shadow">
-                <i class="fas fa-trash mr-1"></i> Delete selected
+                <i class="fas fa-trash mr-1"></i> Hapus item yang di pilih
             </button>
         </form>
 
@@ -27,7 +27,7 @@
                 type="text"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="Search"
+                placeholder="Cari"
                 oninput="delayedSubmit(this.form)"
                 class="bg-gray-100 border border-blue-400 text-gray-800 text-sm rounded-full px-4 py-1 pl-10 pr-8 focus:outline-none focus:ring w-full"
             />
@@ -49,9 +49,9 @@
                     <th class="px-4 py-2">
                         <input type="checkbox" id="select-all">
                     </th>
-                    <th class="px-4 py-2">Name</th>
+                    <th class="px-4 py-2">Nama</th>
                     <th class="px-4 py-2">Avatar</th>
-                    <th class="px-4 py-2">Action</th>
+                    <th class="px-4 py-2">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -65,7 +65,7 @@
                             @if($author->avatar)
                                 <img src="{{ asset('storage/' . $author->avatar) }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
                             @else
-                                <span class="text-gray-500 italic">No avatar</span>
+                                <span class="text-gray-500 italic">Tidak ada avatar</span>
                             @endif
                         </td>
                         <td class="px-4 py-2">
@@ -76,7 +76,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-4 text-center text-gray-500 italic">No authors found.</td>
+                        <td colspan="4" class="px-4 py-4 text-center text-gray-500 italic">Tidak ada penulis.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -85,7 +85,7 @@
 
     <div class="flex justify-between items-center mt-4 text-sm text-gray-700">
         <div class="pr-6">
-            Showing {{ $authors->firstItem() }} to {{ $authors->lastItem() }} of {{ $authors->total() }} results
+            Menampilkan {{ $authors->firstItem() }} - {{ $authors->lastItem() }} dari {{ $authors->total() }} Berita
         </div>
         <div>
             {{ $authors->onEachSide(1)->links('pagination::tailwind') }}

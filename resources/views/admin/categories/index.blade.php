@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Categories')
+@section('page-title', 'Manajemen Kategori')
 
 @section('page-action')
     <a href="{{ route('admin.categories.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
-        + New Category
+        + Tambah Kategori
     </a>
 @endsection
 
@@ -18,7 +18,7 @@
             <input type="hidden" name="selected_ids" id="selected-ids">
             <div id="selected-count" class="hidden text-gray-700 mb-1"></div>
             <button type="submit" id="delete-selected" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm shadow">
-                <i class="fas fa-trash mr-1"></i> Delete selected
+                <i class="fas fa-trash mr-1"></i> Hapus item yang di pilih
             </button>
         </form>
 
@@ -27,7 +27,7 @@
                 type="text"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="Search"
+                placeholder="Cari"
                 oninput="delayedSubmit(this.form)"
                 class="bg-gray-100 border border-blue-400 text-gray-800 text-sm rounded-full px-4 py-1 pl-10 pr-8 focus:outline-none focus:ring w-full"
             />
@@ -49,10 +49,10 @@
                     <th class="px-4 py-2">
                         <input type="checkbox" id="select-all">
                     </th>
-                    <th class="px-4 py-2">Name</th>
+                    <th class="px-4 py-2">Nama</th>
                     <th class="px-4 py-2">Slug</th>
-                    <th class="px-4 py-2">Icon</th>
-                    <th class="px-4 py-2">Action</th>
+                    <th class="px-4 py-2">Ikon</th>
+                    <th class="px-4 py-2">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -67,7 +67,7 @@
                             @if($category->icon)
                                 <img src="{{ asset('storage/' . $category->icon) }}" alt="Icon" class="w-6 h-6 object-contain">
                             @else
-                                <span class="text-gray-500 italic">No icon</span>
+                                <span class="text-gray-500 italic">Tidak ada ikon</span>
                             @endif
                         </td>
                         <td class="px-4 py-2">
@@ -78,7 +78,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-4 text-center text-gray-500 italic">No categories found.</td>
+                        <td colspan="5" class="px-4 py-4 text-center text-gray-500 italic">Tidak ada kategori.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -87,7 +87,7 @@
 
     <div class="flex justify-between items-center mt-4 text-sm text-gray-700">
         <div class="pr-6">
-            Showing {{ $categories->firstItem() }} to {{ $categories->lastItem() }} of {{ $categories->total() }} results
+            Menampilkan {{ $categories->firstItem() }} - {{ $categories->lastItem() }} dari {{ $categories->total() }} Berita
         </div>
         <div>
             {{ $categories->onEachSide(1)->links('pagination::tailwind') }}

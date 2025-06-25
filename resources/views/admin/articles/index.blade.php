@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Article News')
+@section('page-title', 'Manajemen Berita')
 
 @section('page-action')
     <a href="{{ route('admin.articles.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
-        + New Article
+        + Tambah Berita
     </a>
 @endsection
 
@@ -18,7 +18,7 @@
             <input type="hidden" name="selected_ids" id="selected-ids">
             <div id="selected-count" class="hidden text-gray-700 mb-1"></div>
             <button type="submit" id="delete-selected" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm shadow">
-                <i class="fas fa-trash mr-1"></i> Delete selected
+                <i class="fas fa-trash mr-1"></i> Hapus item yang di pilih
             </button>
         </form>
 
@@ -27,7 +27,7 @@
                 type="text"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="Search"
+                placeholder="Cari"
                 oninput="delayedSubmit(this.form)"
                 class="bg-gray-100 border border-blue-400 text-gray-800 text-sm rounded-full px-4 py-1 pl-10 pr-8 focus:outline-none focus:ring w-full"
             />
@@ -75,7 +75,7 @@
                             @if($article->thumbnail)
                                 <img src="{{ asset('storage/'.$article->thumbnail) }}" class="w-20 h-12 object-cover rounded" />
                             @else
-                                <span class="text-gray-500 italic">No image</span>
+                                <span class="text-gray-500 italic">Tidak ada thumbnail</span>
                             @endif
                         </td>
                         <td class="px-4 py-2">
@@ -93,7 +93,7 @@
 
     <div class="flex justify-between items-center mt-4 text-sm text-gray-600">
         <div class="pr-6">
-            Menampilkan {{ $articles->firstItem() }} - {{ $articles->lastItem() }} dari {{ $articles->total() }} artikel
+            Menampilkan {{ $articles->firstItem() }} - {{ $articles->lastItem() }} dari {{ $articles->total() }} Berita
         </div>
         <div>
             {{ $articles->onEachSide(1)->links('pagination::tailwind') }}

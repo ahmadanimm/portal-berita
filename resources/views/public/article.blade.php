@@ -6,7 +6,7 @@
 
 <div class="bg-white pt-6">
   <div class="text-center text-sm text-gray-500">
-    {{ $article->created_at->format('M d, Y') }} · {{ $article->category->name }}
+    {{ $article->created_at->translatedFormat('d F Y') }} · {{ $article->category->name }}
   </div>
 
   <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mt-2">
@@ -18,7 +18,7 @@
   <div>
     <div class="text-sm text-gray-700 font-medium" style="margin-bottom: 1px;">{{ $article->author->name }}</div>
     <div class="text-xs text-gray-500" style="font-size: 10px;">
-      {{ $article->author->articles->count() }} Artikel
+      {{ $article->author->articles->count() }} Berita
     </div>
   </div>
   @php

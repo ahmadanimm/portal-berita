@@ -2,8 +2,8 @@
 
 @section('hero')
 <h2 class="text-3xl font-bold mt-10 mb-10 text-center">
-    Explore Articles by <br>
-    <span class="text-black">{{ $author->name }}</span>
+    Jelajahi Berita yang Dibuat <br>
+    <span class="text-black">Oleh {{ $author->name }}</span>
 </h2>
 @endsection
 

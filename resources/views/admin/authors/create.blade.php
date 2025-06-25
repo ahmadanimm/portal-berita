@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @section('page-title')
-    <a href="{{ route('admin.authors.index') }}" class="text-gray-500 hover:underline">Authors</a>
+    <a href="{{ route('admin.authors.index') }}" class="text-gray-500 hover:underline">Manajemen Penulis</a>
     <span class="text-gray-400"> / </span>
-    <span class="text-black">Tambah Author</span>
+    <span class="text-black">Tambah Penulis</span>
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
     </div>
 
     <div>
-        <label for="avatar" class="block mb-1 font-semibold">Avatar</label>
+        <label for="avatar" class="block mb-1 font-semibold">Avatar / Gambar (Max. 2 MB)</label>
         <input type="file" name="avatar" id="avatar"
             class="w-full border border-gray-300 rounded px-3 py-2" />
     </div>
