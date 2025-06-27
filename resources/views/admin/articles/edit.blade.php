@@ -40,7 +40,7 @@
     </div>
 
     <div>
-        <label class="block mb-1 font-semibold text-sm">Thumbnail Saat Ini:</label>
+        <label class="block mb-1 font-semibold text-sm">Thumbnail Saat Ini</label>
         <img id="thumbnailPreview" src="{{ asset('storage/'.$article->thumbnail) }}"
              class="w-24 h-24 object-cover rounded border" alt="Thumbnail">
     </div>
@@ -48,7 +48,7 @@
     <div>
         <label class="block mb-1 font-semibold text-sm">Ganti Thumbnail (Max. 2 MB)</label>
         <input type="file" name="thumbnail" id="thumbnailInput"
-               class="w-full border border-gray-300 rounded px-3 py-2 text-sm" accept="image/*">
+            class="w-full border border-gray-300 rounded px-3 py-2 text-sm" accept="image/*">
     </div>
 
     <div>
@@ -68,6 +68,17 @@
         </a>
     </div>
 </form>
+
+<div id="fileSizeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+        <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
+        <p class="text-sm text-gray-600 mb-4">Ukuran file terlalu besar. Maksimal 2 MB.</p>
+        <div class="flex justify-center">
+            <button onclick="closeFileSizeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tutup</button>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -75,9 +86,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('thumbnailInput');
     const preview = document.getElementById('thumbnailPreview');
+    const modal = document.getElementById('fileSizeModal');
 
     input.addEventListener('change', function () {
         const file = this.files[0];
+        
+        if (file && file.size > 2 * 1024 * 1024) {
+            this.value = ""; 
+            modal.classList.remove('hidden'); 
+            return;
+        }
+
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -87,5 +106,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function closeFileSizeModal() {
+    document.getElementById('fileSizeModal').classList.add('hidden');
+}
 </script>
 @endpush
+

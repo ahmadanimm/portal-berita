@@ -24,7 +24,11 @@
         <input type="file" name="icon" id="iconInput" accept="image/*"
                class="w-full border border-gray-300 rounded px-3 py-2">
 
-        <p class="block font-semibold mb-2 mt-2">Ikon saat ini:</p>
+        @error('icon')
+            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+        @enderror
+
+        <p class="block font-semibold mb-2 mt-2">Ikon saat ini</p>
         <img id="iconPreview"
              src="{{ $category->icon ? asset('storage/' . $category->icon) : 'https://via.placeholder.com/48' }}"
              alt="ikon"
@@ -41,6 +45,16 @@
         </a>
     </div>
 </form>
+
+<div id="sizeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+        <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
+        <p class="text-sm text-gray-600 mb-4">Ukuran file terlalu besar. Maksimal 2MB.</p>
+        <div class="flex justify-center">
+            <button onclick="closeSizeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tutup</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -48,9 +62,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const iconInput = document.getElementById('iconInput');
     const iconPreview = document.getElementById('iconPreview');
+    const sizeModal = document.getElementById('sizeModal');
 
     iconInput.addEventListener('change', function () {
         const file = this.files[0];
+        if (file && file.size > 2 * 1024 * 1024) {
+            this.value = ''; 
+            sizeModal.classList.remove('hidden');
+            return;
+        }
+
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -60,5 +81,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function closeSizeModal() {
+    document.getElementById('sizeModal').classList.add('hidden');
+}
 </script>
 @endpush

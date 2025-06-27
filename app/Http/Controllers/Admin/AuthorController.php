@@ -56,19 +56,14 @@ class AuthorController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
-            \Storage::disk('public')->delete($author->avatar);
-            $author->avatar = $request->file('avatar')->store('avatars', 'public');
-        }
-
-        $author->name = $request->name;
-        $author->save();
-
-        if ($request->hasFile('avatar')) {
             if ($author->avatar) {
                 \Storage::disk('public')->delete($author->avatar);
             }
             $author->avatar = $request->file('avatar')->store('avatars', 'public');
         }
+
+        $author->name = $request->name;
+        $author->save();
 
         return redirect()->route('admin.authors.index')->with('success', 'Author berhasil diperbarui.');
     }

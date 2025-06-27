@@ -61,7 +61,7 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png',
+            'thumbnail' => 'nullable|image|max:2048',
             'body' => 'required|string',
         ]);
 
@@ -90,7 +90,7 @@ class ArticleController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'body' => 'required|string',
-            'thumbnail' => 'nullable|image|max:5120',
+            'thumbnail' => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('thumbnail')) {

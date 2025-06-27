@@ -12,15 +12,26 @@
 <div class="bg-white p-4 rounded-lg shadow-md">
     <div class="flex justify-between items-center mb-4">
 
-        <form id="bulk-delete-form" method="POST" action="{{ route('admin.articles.destroy', ['article' => 0]) }}" onsubmit="return confirm('Yakin ingin menghapus artikel terpilih?');">
+        <form id="bulk-delete-form" method="POST" action="{{ route('admin.articles.destroy', ['article' => 0]) }}">
             @csrf
             @method('DELETE')
             <input type="hidden" name="selected_ids" id="selected-ids">
             <div id="selected-count" class="hidden text-gray-700 mb-1"></div>
-            <button type="submit" id="delete-selected" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm shadow">
-                <i class="fas fa-trash mr-1"></i> Hapus item yang di pilih
+            <button type="button" id="delete-selected" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm shadow" onclick="showBulkDeleteModal()">
+                <i class="fas fa-trash mr-1"></i> Hapus item yang dipilih
             </button>
         </form>
+
+        <div id="bulkDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-96">
+                <h2 class="text-gray-800 font-semibold text-lg mb-2">Konfirmasi Hapus</h2>
+                <p class="text-sm text-gray-600 mb-4">Apakah Anda yakin ingin menghapus artikel yang dipilih?</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="submitBulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Hapus</button>
+                    <button onclick="closeBulkDeleteModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+                </div>
+            </div>
+        </div>
 
         <form method="GET" action="{{ route('admin.articles.index') }}" class="relative w-64">
             <input
@@ -123,6 +134,20 @@
     function setSelectedIds() {
         const selected = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
         selectedIdsInput.value = selected.join(',');
+    }
+
+    function showBulkDeleteModal() {
+        setSelectedIds();
+        if (selectedIdsInput.value === '') return;
+        document.getElementById('bulkDeleteModal').classList.remove('hidden');
+    }
+
+    function closeBulkDeleteModal() {
+        document.getElementById('bulkDeleteModal').classList.add('hidden');
+    }
+
+    function submitBulkDelete() {
+        document.getElementById('bulk-delete-form').submit();
     }
 
     selectAll.addEventListener('change', function () {

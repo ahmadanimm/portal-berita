@@ -4,10 +4,7 @@
 @include('partials.navbar-profile')
 
 <div class="max-w-7xl mx-auto px-4 py-10">
-
   <div class="flex flex-col md:flex-row items-start md:gap-6 mb-10">
-
-    
     <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-5xl">
       @if (Auth::user()->profile_photo)
         <img id="profilePhotoPreview" src="{{ asset('storage/profile_photos/' . Auth::user()->profile_photo) }}" alt="Foto Profil" class="w-full h-full object-cover">
@@ -58,16 +55,38 @@
         </div>
       </form>
 
-      <form action="{{ route('profile.delete') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun secara permanen?')" class="mt-24">
-        @csrf
-        <button type="submit"
-            class="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 text-sm">
-            Hapus Akun
-        </button>
+      <form id="delete-account-form" action="{{ route('profile.delete') }}" method="POST" class="mt-24">
+          @csrf
+          <button type="button" onclick="showDeleteAccountModal()" class="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 text-sm">
+              Hapus Akun
+          </button>
       </form>
+
     </div>
   </div>
 </div>
+
+<div id="sizeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+      <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
+      <p class="text-sm text-gray-600 mb-4">Ukuran file terlalu besar. Maksimal 2MB.</p>
+      <div class="flex justify-center">
+          <button onclick="closeSizeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tutup</button>
+      </div>
+  </div>
+</div>
+
+<div id="deleteAccountModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg text-center w-96">
+      <h2 class="text-gray-800 font-semibold text-lg mb-2">Konfirmasi Hapus Akun</h2>
+      <p class="text-sm text-gray-600 mb-4">Apakah Anda yakin ingin menghapus akun secara permanen? Tindakan ini tidak dapat dibatalkan.</p>
+      <div class="flex justify-center gap-4">
+          <button onclick="submitDeleteAccount()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Ya, Hapus</button>
+          <button onclick="closeDeleteAccountModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+      </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -76,9 +95,16 @@
     const input = document.getElementById('profilePhotoInput');
     const preview = document.getElementById('profilePhotoPreview');
     const defaultIcon = document.getElementById('defaultIcon');
+    const sizeModal = document.getElementById('sizeModal');
 
     input.addEventListener('change', function (e) {
       const file = e.target.files[0];
+      if (file && file.size > 2 * 1024 * 1024) {
+        input.value = '';
+        sizeModal.classList.remove('hidden');
+        return;
+      }
+
       if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (event) {
@@ -90,5 +116,22 @@
       }
     });
   });
+
+  function closeSizeModal() {
+    document.getElementById('sizeModal').classList.add('hidden');
+  }
+
+  function showDeleteAccountModal() {
+    document.getElementById('deleteAccountModal').classList.remove('hidden');
+  }
+
+  function closeDeleteAccountModal() {
+    document.getElementById('deleteAccountModal').classList.add('hidden');
+  }
+
+  function submitDeleteAccount() {
+    document.getElementById('delete-account-form').submit();
+  }
+
 </script>
 @endpush

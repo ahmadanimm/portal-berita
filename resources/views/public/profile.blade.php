@@ -40,14 +40,30 @@
       <div class="mt-4 flex justify-center md:justify-start gap-3">
         <a href="{{ route('profile.edit') }}" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700">Edit profil</a>
         @if (Auth::user()->is_subscribed)
-          <form method="POST" action="{{ route('subscription.unsubscribe') }}">
+          <form id="unsubscribe-form" method="POST" action="{{ route('subscription.unsubscribe') }}">
             @csrf
-            <button class="bg-gray-300 text-gray-600 px-4 py-2 rounded font-semibold hover:bg-gray-400">Berhenti Berlangganan</button>
+            <button type="button" onclick="showUnsubscribeModal()" class="bg-gray-300 text-gray-600 px-4 py-2 rounded font-semibold hover:bg-gray-400">
+              Berhenti Berlangganan
+            </button>
           </form>
         @else
-          <a href="{{ route('subscription.index') }}" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-semibold hover:bg-blue-200">Berlangganan</a>
+          <a href="{{ route('subscription.index') }}" class="bg-blue-100 text-blue-700 px-4 py-2 rounded font-semibold hover:bg-blue-200">
+            Berlangganan
+          </a>
         @endif
       </div>
+
+      <div id="unsubscribeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-96">
+          <h2 class="text-gray-800 font-semibold text-lg mb-2">Konfirmasi</h2>
+          <p class="text-sm text-gray-600 mb-4">Yakin ingin berhenti berlangganan? Akses premium akan hilang.</p>
+          <div class="flex justify-center gap-4">
+            <button onclick="submitUnsubscribe()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Ya, Berhenti</button>
+            <button onclick="closeUnsubscribeModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -174,3 +190,20 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  function showUnsubscribeModal() {
+    document.getElementById('unsubscribeModal').classList.remove('hidden');
+  }
+
+  function closeUnsubscribeModal() {
+    document.getElementById('unsubscribeModal').classList.add('hidden');
+  }
+
+  function submitUnsubscribe() {
+    document.getElementById('unsubscribe-form').submit();
+  }
+</script>
+@endpush
+

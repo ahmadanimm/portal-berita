@@ -29,6 +29,10 @@
         <label for="avatar" class="block font-semibold mb-1">Ganti Avatar (Max. 2 MB)</label>
         <input type="file" name="avatar" id="avatar"
                class="w-full border border-gray-300 rounded px-3 py-2" accept="image/*" />
+
+        @error('avatar')
+            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -41,6 +45,16 @@
         </a>
     </div>
 </form>
+
+<div id="sizeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+        <h2 class="text-gray-800 font-semibold mb-2">PERHATIAN!</h2>
+        <p class="text-sm text-gray-600 mb-4">Ukuran file terlalu besar. Maksimal 2MB.</p>
+        <div class="flex justify-center">
+            <button onclick="closeSizeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tutup</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -48,10 +62,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('avatar');
     const preview = document.getElementById('avatarPreview');
+    const sizeModal = document.getElementById('sizeModal');
 
     input.addEventListener('change', function () {
         const file = this.files[0];
-        if (file && file.type.startsWith('image/')) {
+
+        if (file && file.size > 2 * 1024 * 1024) {
+            this.value = ''; 
+            sizeModal.classList.remove('hidden');
+            return;
+        }
+
+        if (file && file.type.startsWith('image/') && preview) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
@@ -60,5 +82,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function closeSizeModal() {
+    document.getElementById('sizeModal').classList.add('hidden');
+}
 </script>
 @endpush
