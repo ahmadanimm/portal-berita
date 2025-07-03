@@ -338,7 +338,7 @@
                     <h2 class="text-xl font-semibold mb-2 text-gray-800">{{ session('success') }}</h2>
 
                     <div class="flex justify-center gap-1 text-yellow-400 text-2xl mb-4">
-                        @for ($i = 1; $i <= (session('rated_value') ?? 0); $i++) {{-- Pastikan ada fallback 0 jika session kosong --}}
+                        @for ($i = 1; $i <= (session('rated_value') ?? 0); $i++) 
                             ★
                         @endfor
                     </div>
@@ -373,7 +373,7 @@
                 action="{{ route('comments.store', $article->id) }}" 
                 method="POST"
             @else
-                action="javascript:void(0);" {{-- supaya tidak refresh --}}
+                action="javascript:void(0);" 
             @endauth
             class="flex items-center gap-4 mb-8" 
             id="commentForm"

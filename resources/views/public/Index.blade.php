@@ -38,7 +38,7 @@
         @php $article = $category->articles->sortByDesc('created_at')->first(); @endphp
         @if ($article)
           <div
-            class="flex-shrink-0 w-full h-full relative z-20" {{-- Z-20 agar bisa diklik --}}
+            class="flex-shrink-0 w-full h-full relative z-20" 
             style="background-image: url('{{ asset('storage/' . $article->thumbnail) }}'); background-size: cover; background-position: center;"
           >
             <a href="{{ route('article.show', $article->slug) }}" class="absolute inset-0 z-30"></a>
@@ -178,9 +178,17 @@
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>
-    <p class="text-sm text-gray-600 mb-4">Silakan login dan berlangganan untuk mengakses artikel premium.</p>
+    <p class="text-sm text-gray-600 mb-4">
+      @guest
+        Silakan login dan berlangganan untuk mengakses artikel premium.
+      @else
+        Silakan berlangganan untuk mengakses artikel premium.
+      @endguest
+    </p>
     <div class="flex justify-center gap-3">
-      <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
+      @guest
+        <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
+      @endguest
       <a href="{{ route('subscription.index') }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Berlangganan</a>
     </div>
     <button onclick="closePremiumModal()" class="text-sm text-gray-500 mt-4 hover:underline">Tutup</button>
@@ -302,9 +310,17 @@
 <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
     <h2 class="text-lg font-semibold mb-2">Konten Premium</h2>
-    <p class="text-sm text-gray-600 mb-4">Silakan login dan berlangganan untuk mengakses artikel premium.</p>
+    <p class="text-sm text-gray-600 mb-4">
+      @guest
+        Silakan login dan berlangganan untuk mengakses artikel premium.
+      @else
+        Silakan berlangganan untuk mengakses artikel premium.
+      @endguest
+    </p>
     <div class="flex justify-center gap-3">
-      <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
+      @guest
+        <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
+      @endguest
       <a href="{{ route('subscription.index') }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Berlangganan</a>
     </div>
     <button onclick="closePremiumModal()" class="text-sm text-gray-500 mt-4 hover:underline">Tutup</button>
