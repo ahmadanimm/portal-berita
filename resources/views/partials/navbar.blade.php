@@ -12,104 +12,104 @@
         </div>
         <div class="border-l-2 border-gray-400 h-11"></div>
         <form method="GET" action="{{ route('search') }}" class="relative" id="searchForm">
-        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" id="searchIcon">
-            <i class="bi bi-search"></i>
-        </span>
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" id="searchIcon">
+              <i class="bi bi-search"></i>
+          </span>
 
-        <input
-            type="text"
-            name="query"
-            id="searchInput"
-            value="{{ request('query') }}"
-            placeholder="Cari tokoh, topik atau peristiwa"
-            class="w-80 rounded-full border border-gray-300 pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-            autocomplete="off"
-        />
+          <input
+              type="text"
+              name="query"
+              id="searchInput"
+              value="{{ request('query') }}"
+              placeholder="Cari tokoh, topik atau peristiwa"
+              class="w-80 rounded-full border border-gray-300 pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              autocomplete="off"
+          />
 
-        <span
-            id="clearSearch"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer {{ request('query') ? '' : 'hidden' }}"
-        >
-            <i class="bi bi-x-circle-fill"></i>
-        </span>
-    </form>
+          <span
+              id="clearSearch"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer {{ request('query') ? '' : 'hidden' }}"
+          >
+              <i class="bi bi-x-circle-fill"></i>
+          </span>
+      </form>
 
-    <script>
-        const input = document.getElementById('searchInput');
-        const form = document.getElementById('searchForm');
-        const searchIcon = document.getElementById('searchIcon');
-        const clearBtn = document.getElementById('clearSearch');
+      <script>
+          const input = document.getElementById('searchInput');
+          const form = document.getElementById('searchForm');
+          const searchIcon = document.getElementById('searchIcon');
+          const clearBtn = document.getElementById('clearSearch');
 
-        function submitSearchAndKeepFocus() {
-            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-            localStorage.setItem('scrollPosition', scrollPosition);
-            localStorage.setItem('searchInputFocus', 'true');
-            form.submit();
-        }
+          function submitSearchAndKeepFocus() {
+              const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+              localStorage.setItem('scrollPosition', scrollPosition);
+              localStorage.setItem('searchInputFocus', 'true');
+              form.submit();
+          }
 
-        function debounce(fn, delay) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => fn.apply(this, args), delay);
-            };
-        }
+          function debounce(fn, delay) {
+              let timeout;
+              return function (...args) {
+                  clearTimeout(timeout);
+                  timeout = setTimeout(() => fn.apply(this, args), delay);
+              };
+          }
 
-        const debouncedSubmit = debounce(() => {
-            if (input.value.trim() !== '') {
-                submitSearchAndKeepFocus();
-            } else {
-                clearBtn.classList.add('hidden');
-                window.location.href = '/';
-            }
-        }, 500); 
+          const debouncedSubmit = debounce(() => {
+              if (input.value.trim() !== '') {
+                  submitSearchAndKeepFocus();
+              } else {
+                  clearBtn.classList.add('hidden');
+                  window.location.href = '/';
+              }
+          }, 500); 
 
-        input.addEventListener('input', function () {
-            if (input.value.trim() === '') {
-                clearBtn.classList.add('hidden');
-            } else {
-                clearBtn.classList.remove('hidden');
-            }
-            debouncedSubmit();
-        });
+          input.addEventListener('input', function () {
+              if (input.value.trim() === '') {
+                  clearBtn.classList.add('hidden');
+              } else {
+                  clearBtn.classList.remove('hidden');
+              }
+              debouncedSubmit();
+          });
 
-        searchIcon?.addEventListener('click', () => {
-            if (input.value.trim()) {
-                submitSearchAndKeepFocus();
-            }
-        });
+          searchIcon?.addEventListener('click', () => {
+              if (input.value.trim()) {
+                  submitSearchAndKeepFocus();
+              }
+          });
 
-        clearBtn?.addEventListener('click', () => {
-            input.value = '';
-            input.focus();
-            clearBtn.classList.add('hidden');
-            window.location.href = '/';
-        });
+          clearBtn?.addEventListener('click', () => {
+              input.value = '';
+              input.focus();
+              clearBtn.classList.add('hidden');
+              window.location.href = '/';
+          });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const shouldFocus = localStorage.getItem('searchInputFocus');
-            const storedScrollPosition = localStorage.getItem('scrollPosition');
+          document.addEventListener('DOMContentLoaded', () => {
+              const shouldFocus = localStorage.getItem('searchInputFocus');
+              const storedScrollPosition = localStorage.getItem('scrollPosition');
 
-            if (shouldFocus === 'true') {
-                input.focus();
-                const value = input.value;
-                input.value = '';
-                input.value = value;
+              if (shouldFocus === 'true') {
+                  input.focus();
+                  const value = input.value;
+                  input.value = '';
+                  input.value = value;
 
-                if (storedScrollPosition) {
-                    window.scrollTo(0, parseInt(storedScrollPosition));
-                }
-                localStorage.removeItem('searchInputFocus');
-                localStorage.removeItem('scrollPosition');
-            }
+                  if (storedScrollPosition) {
+                      window.scrollTo(0, parseInt(storedScrollPosition));
+                  }
+                  localStorage.removeItem('searchInputFocus');
+                  localStorage.removeItem('scrollPosition');
+              }
 
-            if (input.value.trim() === '') {
-                clearBtn.classList.add('hidden');
-            } else {
-                clearBtn.classList.remove('hidden');
-            }
-        });
-    </script>
+              if (input.value.trim() === '') {
+                  clearBtn.classList.add('hidden');
+              } else {
+                  clearBtn.classList.remove('hidden');
+              }
+          });
+      </script>
 
       </div>
       <div class="flex items-center gap-4">

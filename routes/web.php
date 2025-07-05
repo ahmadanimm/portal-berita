@@ -7,7 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
-use App\Http\Controllers\CategoryController; 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthorController as PublicAuthorController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; 
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->prefix('admin')->name('
     Route::resource('articles', ArticleController::class);
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('authors', AuthorController::class);
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
     Route::delete('authors/delete-selected', [AuthorController::class, 'destroy'])->name('admin.authors.destroy');
     Route::delete('/authors/bulk-delete', [AuthorController::class, 'bulkDelete'])->name('authors.bulkDelete');
     Route::delete('categories/bulk-delete', [\App\Http\Controllers\Admin\CategoryController::class, 'bulkDelete'])->name('categories.bulkDelete');

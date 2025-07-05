@@ -35,6 +35,10 @@
              class="flex items-center px-3 py-2 rounded hover:bg-blue-800 transition {{ request()->routeIs('admin.categories.*') ? 'bg-blue-800 font-semibold' : '' }}">
             <i class="fas fa-layer-group mr-2 text-blue-300"></i> Manajemen Kategori
           </a>
+          <a href="{{ route('admin.users.index') }}"
+            class="flex items-center px-3 py-2 rounded hover:bg-blue-800 transition {{ request()->routeIs('admin.users.*') ? 'bg-blue-800 font-semibold' : '' }}">
+            <i class="fas fa-users mr-2 text-blue-300"></i> Manajemen User
+          </a>
         </nav>
       </div>
       <form method="POST" action="{{ route('logout') }}" class="p-6">
